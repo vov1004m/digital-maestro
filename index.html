@@ -6,7 +6,7 @@
   <title>디지털 마에스트로 — 지휘자가 알려주는 AI 클래식 작곡법</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -27,7 +27,7 @@
       --blue-light: #e6f1fb;
       --amber: #854f0b;
       --amber-light: #faeeda;
-      --serif: 'Noto Serif KR', serif;
+      --serif: 'Nanum Gothic', sans-serif;
       --sans: 'Noto Sans KR', sans-serif;
       --radius: 10px;
       --radius-lg: 16px;
@@ -565,50 +565,78 @@
   <!-- PRICING -->
   <section id="pricing">
     <div class="container">
-      <div class="section-eyebrow">수강 플랜</div>
-      <h2 class="section-title">목적에 맞는<br>플랜을 선택하세요</h2>
-      <p class="section-desc">모든 플랜에 VOD 영구 소장이 포함됩니다.</p>
-      <div class="pricing-grid">
+      <div class="section-eyebrow">수강 신청</div>
+      <h2 class="section-title">강의별로 구매하거나<br>전체 패키지로 시작하세요</h2>
+      <p class="section-desc">각 강의는 개별 구매 가능합니다. 전체 패키지 구매 시 할인이 적용됩니다. 모든 강의는 VOD 영구 소장입니다.</p>
+
+      <div class="pricing-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 1rem;">
         <div class="price-card">
-          <div class="price-tier">Light</div>
-          <div class="price-amount">9.9<span>만원</span></div>
-          <div class="price-note">입문자를 위한 기본 플랜</div>
+          <div class="price-tier">1강</div>
+          <div class="price-amount">3.9<span>만원</span></div>
+          <div class="price-note">AI 툴 기초 + 클래식 구조</div>
           <div class="price-divider"></div>
           <ul class="price-features">
-            <li>AI 툴 기본 사용법 강의</li>
+            <li>Suno / Udio 기본 사용법</li>
+            <li>지휘자가 말하는 클래식 구조</li>
             <li>샘플 프롬프트 제공</li>
-            <li>VOD 영구 소장</li>
           </ul>
-          <a href="/checkout?plan=light" class="price-btn">시작하기</a>
+          <a href="/checkout?lecture=1" class="price-btn">구매하기</a>
         </div>
-        <div class="price-card featured">
-          <div class="price-badge-wrap"><span class="price-badge">주력 플랜</span></div>
-          <div class="price-tier">Standard</div>
-          <div class="price-amount">19.9<span>만원</span></div>
-          <div class="price-note">대부분의 수강생이 선택</div>
+        <div class="price-card">
+          <div class="price-tier">2강</div>
+          <div class="price-amount">3.9<span>만원</span></div>
+          <div class="price-note">프롬프트 사전 + 가족 테마</div>
           <div class="price-divider"></div>
           <ul class="price-features">
             <li>지휘자 엄선 프롬프트 사전</li>
-            <li>가족·힐링·크리에이터 테마 템플릿</li>
-            <li>예술적 화성학 가이드</li>
-            <li>결과물 업로드 + 지휘자 댓글 피드백</li>
-            <li>VOD 영구 소장</li>
+            <li>자장가 · 헌정곡 실습</li>
+            <li>가족 테마 템플릿</li>
           </ul>
-          <a href="/checkout?plan=standard" class="price-btn featured-btn">수강 신청하기</a>
+          <a href="/checkout?lecture=2" class="price-btn">구매하기</a>
         </div>
         <div class="price-card">
-          <div class="price-tier">VIP</div>
-          <div class="price-amount">49.9<span>만원</span></div>
-          <div class="price-note">최고의 완성도를 원하는 분</div>
+          <div class="price-tier">3강</div>
+          <div class="price-amount">3.9<span>만원</span></div>
+          <div class="price-note">힐링 음악 + 화성학 가이드</div>
           <div class="price-divider"></div>
           <ul class="price-features">
-            <li>Standard 전부 포함</li>
-            <li>지휘자 1:1 곡 감수</li>
-            <li>전문 믹싱 피드백 제공</li>
-            <li>최종 결과물 컨설팅</li>
+            <li>명상 · 수면 음악 제작</li>
+            <li>예술적 화성학 가이드</li>
+            <li>힐링 테마 템플릿</li>
           </ul>
-          <a href="/checkout?plan=vip" class="price-btn">VIP 신청하기</a>
+          <a href="/checkout?lecture=3" class="price-btn">구매하기</a>
         </div>
+        <div class="price-card">
+          <div class="price-tier">4강</div>
+          <div class="price-amount">3.9<span>만원</span></div>
+          <div class="price-note">BGM 실전 + 지휘자 피드백</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li>크리에이터용 BGM 실전</li>
+            <li>결과물 업로드</li>
+            <li>지휘자 직접 댓글 피드백</li>
+          </ul>
+          <a href="/checkout?lecture=4" class="price-btn">구매하기</a>
+        </div>
+      </div>
+
+      <div class="price-card featured" style="max-width: 420px; margin: 0 auto;">
+        <div class="price-badge-wrap"><span class="price-badge">전체 패키지 — 가장 많이 선택</span></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div class="price-tier" style="margin-top: 0.5rem;">1강 + 2강 + 3강 + 4강</div>
+            <div class="price-amount">12.9<span>만원</span></div>
+            <div class="price-note">개별 구매 대비 약 17% 할인</div>
+          </div>
+          <ul class="price-features" style="margin-bottom: 0; flex: 1; min-width: 180px;">
+            <li>전 강의 VOD 영구 소장</li>
+            <li>지휘자 엄선 프롬프트 사전 전체</li>
+            <li>모든 테마 템플릿 포함</li>
+            <li>결과물 업로드 + 지휘자 피드백</li>
+          </ul>
+        </div>
+        <div class="price-divider"></div>
+        <a href="/checkout?plan=all" class="price-btn featured-btn">전체 패키지 신청하기</a>
       </div>
     </div>
   </section>
@@ -618,24 +646,15 @@
     <div class="container">
       <div class="section-eyebrow">강사 소개</div>
       <div class="instructor-wrap">
-        <div class="instructor-avatar">민</div>
+        <img src="instructor.png" alt="민병현 지휘자" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center top; flex-shrink: 0;" />
         <div>
           <div class="instructor-name">민병현</div>
-          <div class="instructor-title">지휘자 · 클래식도슨트 유튜브 채널 운영자</div>
+          <div class="instructor-title">지휘자 · 음악감독 · 클래식도슨트 유튜브 채널 운영자</div>
           <p class="instructor-bio">
-            Dream Chamber Orchestra 상임지휘자로 15년간 활동해온 현직 지휘자입니다.
+            파주 DMZ 필하모닉 오케스트라 및 드림챔버오케스트라 지휘 경력 15년이 넘는 현직 지휘자입니다.
             한국예술종합학교 지휘과를 졸업하고, 뮤지컬 음악감독과 앨범 프로듀싱을 거쳐
             클래식도슨트 채널을 통해 대중과 클래식의 거리를 좁히는 일을 하고 있습니다.
           </p>
-          <div class="tag-list">
-            <span class="tag">지휘 15년</span>
-            <span class="tag">한국예술종합학교</span>
-            <span class="tag">Dream Chamber Orchestra</span>
-            <span class="tag">DMZ 필하모닉</span>
-            <span class="tag">동덕여대 DPHO</span>
-            <span class="tag">뮤지컬 음악감독</span>
-            <span class="tag">클래식도슨트</span>
-          </div>
         </div>
       </div>
     </div>
