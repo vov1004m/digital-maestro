@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로그인 — 디지털 마에스트로</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #fafaf8;
+      --bg-card: #ffffff;
+      --bg-muted: #f4f3f0;
+      --text: #1a1a18;
+      --text-2: #5a5a56;
+      --text-3: #9a9a94;
+      --border: rgba(26,26,24,0.1);
+      --border-2: rgba(26,26,24,0.18);
+      --teal: #0f6e56;
+      --teal-light: #e1f5ee;
+      --red: #c0392b;
+      --red-light: #fdecea;
+      --sans: 'Noto Sans KR', sans-serif;
+      --radius: 10px;
+    }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Nanum Gothic', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-register {
+      font-size: 13px;
+      color: var(--text-2);
+      text-decoration: none;
+    }
+    .nav-register:hover { color: var(--text); }
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.25rem;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 420px;
+    }
+    .card-title {
+      font-family: 'Nanum Gothic', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .card-sub {
+      font-size: 14px;
+      color: var(--text-2);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .form-group { margin-bottom: 1.25rem; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 11px 14px;
+      border: 0.5px solid var(--border-2);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus { border-color: var(--teal); }
+    input::placeholder { color: var(--text-3); }
+    .forgot {
+      display: block;
+      text-align: right;
+      font-size: 12px;
+      color: var(--text-3);
+      text-decoration: none;
+      margin-top: 0.4rem;
+    }
+    .forgot:hover { color: var(--teal); }
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      background: var(--text);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 500;
+      font-family: var(--sans);
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: opacity 0.15s;
+    }
+    .btn-submit:hover { opacity: 0.8; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .register-link {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-2);
+      margin-top: 1.5rem;
+    }
+    .register-link a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .register-link a:hover { text-decoration: underline; }
+    .alert {
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      margin-bottom: 1.25rem;
+      display: none;
+      line-height: 1.6;
+    }
+    .alert.error {
+      background: var(--red-light);
+      color: var(--red);
+      border: 0.5px solid rgba(192,57,43,0.2);
+      display: block;
+    }
+    .alert.success {
+      background: var(--teal-light);
+      color: var(--teal);
+      border: 0.5px solid rgba(15,110,86,0.2);
+      display: block;
+    }
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+    footer p { font-size: 12px; color: var(--text-3); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">디지털 마에스트로</a>
+    <a href="/register.html" class="nav-register">계정이 없으신가요? 회원가입</a>
+  </nav>
+
+  <div class="main">
+    <div class="card">
+      <div class="card-title">로그인</div>
+      <div class="card-sub">반갑습니다. 계속 학습을 이어가세요.</div>
+
+      <div id="alert" class="alert"></div>
+
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" placeholder="example@email.com" />
+      </div>
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" placeholder="비밀번호를 입력해주세요" />
+        <a href="/forgot.html" class="forgot">비밀번호를 잊으셨나요?</a>
+      </div>
+
+      <button class="btn-submit" id="submit-btn" onclick="handleLogin()">로그인</button>
+
+      <div class="register-link">
+        계정이 없으신가요? <a href="/register.html">회원가입</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 디지털 마에스트로 · 민병현</p>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://vdgpsejlagxnrilcnqag.supabase.co'
+    const SUPABASE_KEY = 'sb_publishable_czh60ItKuAVBkj3TAFBKXw_-Kz2QseH'
+
+    const { createClient } = supabase
+    const client = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+    // 이미 로그인된 경우 대시보드로 이동
+    client.auth.getSession().then(({ data: { session } }) => {
+      if (session) window.location.href = '/dashboard.html'
+    })
+
+    function showAlert(message, type) {
+      const alert = document.getElementById('alert')
+      alert.textContent = message
+      alert.className = `alert ${type}`
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById('email').value.trim()
+      const password = document.getElementById('password').value
+      const btn = document.getElementById('submit-btn')
+
+      if (!email || !password) {
+        showAlert('이메일과 비밀번호를 입력해주세요.', 'error')
+        return
+      }
+
+      btn.disabled = true
+      btn.textContent = '로그인 중...'
+
+      const { data, error } = await client.auth.signInWithPassword({ email, password })
+
+      if (error) {
+        showAlert('이메일 또는 비밀번호가 올바르지 않습니다.', 'error')
+        btn.disabled = false
+        btn.textContent = '로그인'
+        return
+      }
+
+      window.location.href = '/dashboard.html'
+    }
+
+    // 엔터키로 로그인
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLogin()
+    })
+  </script>
+
+</body>
+</html>
