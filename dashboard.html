@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대시보드 — 디지털 마에스트로</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #fafaf8;
+      --bg-card: #ffffff;
+      --bg-muted: #f4f3f0;
+      --text: #1a1a18;
+      --text-2: #5a5a56;
+      --text-3: #9a9a94;
+      --border: rgba(26,26,24,0.1);
+      --border-2: rgba(26,26,24,0.18);
+      --teal: #0f6e56;
+      --teal-light: #e1f5ee;
+      --sans: 'Noto Sans KR', sans-serif;
+      --radius: 10px;
+      --radius-lg: 16px;
+    }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Nanum Gothic', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-name { font-size: 13px; color: var(--text-2); }
+    .btn-logout {
+      font-size: 13px;
+      color: var(--text-3);
+      background: none;
+      border: 0.5px solid var(--border-2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: color 0.15s;
+    }
+    .btn-logout:hover { color: var(--text); }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .greeting {
+      margin-bottom: 2.5rem;
+    }
+    .greeting-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 0.5rem;
+    }
+    .greeting-title {
+      font-family: 'Nanum Gothic', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .greeting-sub { font-size: 14px; color: var(--text-2); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+    }
+    .stat-label { font-size: 12px; color: var(--text-3); margin-bottom: 0.5rem; }
+    .stat-value {
+      font-family: 'Nanum Gothic', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .section-title {
+      font-family: 'Nanum Gothic', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .course-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 0.5px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .course-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-card);
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.15s;
+    }
+    .course-item:hover { background: var(--bg-muted); }
+    .course-item.locked { opacity: 0.45; pointer-events: none; }
+    .week-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--bg-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: var(--text-2);
+    }
+    .week-badge.done { background: var(--teal-light); color: var(--teal); }
+    .course-info { flex: 1; }
+    .course-title { font-size: 14px; font-weight: 500; margin-bottom: 0.2rem; }
+    .course-desc { font-size: 12px; color: var(--text-3); }
+    .course-status {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .course-status.available { background: var(--teal-light); color: var(--teal); }
+    .course-status.locked-badge { background: var(--bg-muted); color: var(--text-3); }
+
+    .empty-feedback {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-3);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      margin-top: 4rem;
+    }
+    footer p { font-size: 12px; color: var(--text-3); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">디지털 마에스트로</a>
+    <div class="nav-right">
+      <span class="nav-name" id="nav-name"></span>
+      <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="greeting">
+      <div class="greeting-label">My Dashboard</div>
+      <div class="greeting-title" id="greeting-title">안녕하세요!</div>
+      <div class="greeting-sub">지휘자와 함께하는 AI 작곡 수업에 오신 걸 환영합니다.</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">수강 중인 강의</div>
+        <div class="stat-value" id="stat-enrolled">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">완료한 강의</div>
+        <div class="stat-value" id="stat-done">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">받은 피드백</div>
+        <div class="stat-value">0</div>
+      </div>
+    </div>
+
+    <div class="section-title">강의 목록</div>
+    <div class="course-list">
+      <a href="/course-1.html" class="course-item">
+        <div class="week-badge">1</div>
+        <div class="course-info">
+          <div class="course-title">AI 작곡 툴 기초 + 클래식 구조</div>
+          <div class="course-desc">Suno / Udio 기본 사용법 · 지휘자가 말하는 클래식 구조</div>
+        </div>
+        <span class="course-status available">수강 가능</span>
+      </a>
+      <div class="course-item locked">
+        <div class="week-badge">2</div>
+        <div class="course-info">
+          <div class="course-title">프롬프트 사전 활용 + 가족 테마</div>
+          <div class="course-desc">지휘자 엄선 프롬프트 사전 · 자장가 · 헌정곡 실습</div>
+        </div>
+        <span class="course-status locked-badge">잠김</span>
+      </div>
+      <div class="course-item locked">
+        <div class="week-badge">3</div>
+        <div class="course-info">
+          <div class="course-title">힐링·명상 음악 제작 + 화성학</div>
+          <div class="course-desc">명상 · 수면 음악 제작 · 예술적 화성학 가이드</div>
+        </div>
+        <span class="course-status locked-badge">잠김</span>
+      </div>
+      <div class="course-item locked">
+        <div class="week-badge">4</div>
+        <div class="course-info">
+          <div class="course-title">BGM 크리에이터 실전 + 피드백</div>
+          <div class="course-desc">크리에이터용 BGM 실전 · 지휘자 직접 피드백</div>
+        </div>
+        <span class="course-status locked-badge">잠김</span>
+      </div>
+    </div>
+
+    <div class="section-title">최근 피드백</div>
+    <div class="empty-feedback">
+      아직 받은 피드백이 없어요.<br>강의를 수강하고 결과물을 업로드하면 지휘자가 직접 피드백을 드립니다.
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2026 디지털 마에스트로 · 민병현</p>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://vdgpsejlagxnrilcnqag.supabase.co'
+    const SUPABASE_KEY = 'sb_publishable_czh60ItKuAVBkj3TAFBKXw_-Kz2QseH'
+
+    const { createClient } = supabase
+    const client = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+    // 로그인 확인 — 비로그인 시 로그인 페이지로
+    async function init() {
+      const { data: { session } } = await client.auth.getSession()
+      if (!session) {
+        window.location.href = '/login.html'
+        return
+      }
+
+      const user = session.user
+      const name = user.user_metadata?.name || user.email
+
+      document.getElementById('nav-name').textContent = name
+      document.getElementById('greeting-title').textContent = `${name}님, 안녕하세요!`
+
+      // 수강 내역 불러오기
+      const { data: enrollments } = await client
+        .from('enrollments')
+        .select('*')
+        .eq('user_id', user.id)
+
+      if (enrollments) {
+        document.getElementById('stat-enrolled').textContent = enrollments.length
+      }
+    }
+
+    async function handleLogout() {
+      await client.auth.signOut()
+      window.location.href = '/'
+    }
+
+    init()
+  </script>
+
+</body>
+</html>
