@@ -410,9 +410,52 @@
     footer p { font-size: 12px; color: var(--text-3); }
 
     /* RESPONSIVE */
+
+    /* 햄버거 버튼 */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: rgba(250,250,248,0.98);
+      backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--border);
+      padding: 1rem 2rem;
+      flex-direction: column;
+      z-index: 99;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 15px;
+      color: var(--text-2);
+      text-decoration: none;
+      padding: 0.85rem 0;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a.mobile-cta { color: var(--teal); font-weight: 500; }
+
     @media (max-width: 600px) {
       nav { padding: 0 1rem; }
       .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
       .hero { padding: 4rem 1.25rem 3rem; }
       .container { padding: 0 1.25rem; }
       section { padding: 3.5rem 0; }
@@ -434,15 +477,28 @@
       <a href="/login">로그인</a>
       <a href="/checkout" class="nav-cta">수강 신청</a>
     </div>
+    <button class="nav-hamburger" onclick="toggleMenu()" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- 모바일 메뉴 -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="closeMenu()">강의 소개</a>
+    <a href="#curriculum" onclick="closeMenu()">커리큘럼</a>
+    <a href="#pricing" onclick="closeMenu()">수강료</a>
+    <a href="#instructor" onclick="closeMenu()">강사 소개</a>
+    <a href="/login" onclick="closeMenu()">로그인</a>
+    <a href="/register" onclick="closeMenu()">회원가입</a>
+    <a href="/checkout" onclick="closeMenu()" class="mobile-cta">수강 신청 →</a>
+  </div>
 
   <!-- HERO -->
   <div class="hero">
     <div class="hero-badge">AI 클래식 마스터클래스</div>
-    <h1>지휘자의 귀를 빌려드립니다<br><em>누구나 예술가 수준의<br>클래식을 만드는 법</em></h1>
+    <h1>베토벤과 모차르트의<br>작곡법으로<br><em>나만의 클래식을 만든다</em></h1>
     <p class="hero-desc">
-      15년 차 전문 지휘자의 음악적 안목과 AI 기술의 결합.<br>
-      Suno, Udio로 세상에 단 하나뿐인 클래식을 직접 만들어보세요.
+      위대한 작곡가들이 쓴 화성과 구조를 빌려, AI로 나만의 클래식을 완성하세요. 15년 차 지휘자가 직접 가르쳐드립니다.
     </p>
     <div class="hero-cta">
       <a href="/checkout" class="btn-primary">수강 신청하기 →</a>
@@ -468,23 +524,23 @@
   <section id="about">
     <div class="container">
       <div class="section-eyebrow">왜 이 강의인가</div>
-      <h2 class="section-title">AI 툴은 있는데,<br>예술적 안목이 없다</h2>
-      <p class="section-desc">Suno, Udio 같은 AI 작곡 툴은 이미 보급됐습니다. 하지만 결과물의 완성도를 판단할 기준이 없어 퀄리티가 낮습니다.</p>
+      <h2 class="section-title">AI로 만든 음악이<br>왜 다 비슷하게 들릴까요</h2>
+      <p class="section-desc">프롬프트를 넣으면 누구나 음악이 나옵니다. 하지만 베토벤이 왜 그 화음을 썼는지, 모차르트의 선율이 왜 아름다운지 모르면 결과물은 그냥 소음에 가깝습니다.</p>
       <div class="pain-grid">
         <div class="pain-card">
           <div class="pain-icon">🎼</div>
-          <h3>툴은 있는데, 안목이 없다</h3>
-          <p>AI로 음악을 만들 수 있지만, 예술적으로 완성됐는지 판단할 기준이 없어 결과물의 질이 낮습니다.</p>
+          <h3>프롬프트만으로는 부족하다</h3>
+          <p>AI 툴은 누구나 쓸 수 있습니다. 하지만 위대한 작곡가들의 언어를 알아야 진짜 클래식이 나옵니다.</p>
         </div>
         <div class="pain-card">
-          <div class="pain-icon">💝</div>
-          <h3>특별한 음악이 필요한 순간</h3>
-          <p>아이의 자장가, 부모님 헌정곡, 나만의 명상 음악. 직접 만들고 싶지만 어디서부터 시작할지 모릅니다.</p>
+          <div class="pain-icon">🎹</div>
+          <h3>화성학을 몰라도 됩니다</h3>
+          <p>베토벤의 화음, 모차르트의 선율 구조를 악보 없이 이해하는 법. 지휘자가 15년간 쌓은 언어로 쉽게 풀어드립니다.</p>
         </div>
         <div class="pain-card">
-          <div class="pain-icon">🎬</div>
-          <h3>저작권 없는 BGM이 필요하다</h3>
-          <p>크리에이터에게 고퀄리티 클래식 BGM은 필수. 하지만 유료 라이선스 없이 쓸 수 있는 선택지가 없습니다.</p>
+          <div class="pain-icon">✨</div>
+          <h3>아무나 만들 수 없는 클래식</h3>
+          <p>같은 AI 툴을 써도 결과물이 다릅니다. 작곡 거장들의 문법을 아는 사람의 음악은 다릅니다.</p>
         </div>
       </div>
     </div>
@@ -494,28 +550,28 @@
   <section>
     <div class="container">
       <div class="section-eyebrow">이런 분들을 위해</div>
-      <h2 class="section-title">세 가지 이유로<br>클래식을 만들고 싶은 분</h2>
-      <p class="section-desc">목적은 달라도 지휘자의 안목으로 만드는 방법은 같습니다.</p>
+      <h2 class="section-title">클래식을 만들고 싶은데<br>어디서부터 시작해야 할지 모르는 분</h2>
+      <p class="section-desc">악기를 다룰 줄 몰라도, 악보를 읽을 줄 몰라도 됩니다. 지휘자의 언어로 배우면 됩니다.</p>
       <div class="who-list">
         <div class="who-item">
-          <div class="who-icon family">👨‍👩‍👧</div>
+          <div class="who-icon family">🎵</div>
           <div class="who-text">
-            <h3>가족을 위한 특별한 선물을 만들고 싶은 분</h3>
-            <p>아이의 자장가, 부모님 환갑 헌정곡 등 세상에 단 하나뿐인 음악을 직접 만들고 싶은 부모님과 자녀분</p>
+            <h3>클래식을 좋아하지만 만들 줄은 모르는 분</h3>
+            <p>베토벤, 모차르트 음악을 즐겨 듣지만 직접 만드는 건 엄두가 나지 않았던 분. 이제 그 거장들의 문법으로 직접 만들 수 있습니다.</p>
           </div>
         </div>
         <div class="who-item">
-          <div class="who-icon health">🌿</div>
+          <div class="who-icon health">🎁</div>
           <div class="who-text">
-            <h3>나만의 명상·수면 음악이 필요한 분</h3>
-            <p>일상의 루틴을 고품격 힐링 음악으로 완성하고 싶은 직장인. 시중 음원이 아닌, 내 취향에 맞춘 음악을 원하는 분</p>
+            <h3>소중한 사람에게 세상에 하나뿐인 음악을 선물하고 싶은 분</h3>
+            <p>아이의 자장가, 부모님 헌정곡, 연인을 위한 곡. 거장의 작곡법으로 만든 음악은 어떤 선물과도 다릅니다.</p>
           </div>
         </div>
         <div class="who-item">
           <div class="who-icon money">🎬</div>
           <div class="who-text">
-            <h3>저작권 걱정 없는 BGM이 필요한 크리에이터</h3>
-            <p>유튜브, 릴스, 팟캐스트에 쓸 고퀄리티 클래식 BGM을 직접 제작하고 싶은 콘텐츠 크리에이터</p>
+            <h3>내 콘텐츠에 품격 있는 클래식 BGM이 필요한 크리에이터</h3>
+            <p>유튜브, 릴스, 팟캐스트에 쓸 고퀄리티 클래식 BGM을 직접 제작하고 싶은 분. 저작권 걱정 없이 사용 가능합니다.</p>
           </div>
         </div>
       </div>
@@ -526,35 +582,35 @@
   <section id="curriculum">
     <div class="container">
       <div class="section-eyebrow">커리큘럼</div>
-      <h2 class="section-title">4주 완성<br>지휘자와 함께하는 AI 작곡</h2>
+      <h2 class="section-title">4주 완성<br>거장의 작곡법으로 배우는 AI 클래식</h2>
       <p class="section-desc">매주 강의 후 직접 만든 결과물을 업로드하면, 지휘자가 직접 피드백을 드립니다.</p>
       <div class="curriculum-list">
         <div class="curriculum-item">
           <div class="week-num">1</div>
           <div class="curriculum-text">
-            <h3>AI 작곡 툴 기초 + 지휘자가 말하는 클래식 구조</h3>
-            <p>Suno, Udio 기본 사용법부터 시작. 지휘자의 관점에서 좋은 클래식이란 무엇인지, 어떻게 판단하는지를 배웁니다.</p>
+            <h3>클래식이란 무엇인가 — 지휘자의 귀로 듣는 법</h3>
+            <p>베토벤과 모차르트는 왜 위대한가. AI 툴을 쓰기 전에 먼저 좋은 음악을 판별하는 지휘자의 기준을 배웁니다. Suno, Udio 기초 사용법 포함.</p>
           </div>
         </div>
         <div class="curriculum-item">
           <div class="week-num">2</div>
           <div class="curriculum-text">
-            <h3>프롬프트 사전 활용 + 가족 테마 실습</h3>
-            <p>지휘자가 엄선한 프롬프트 사전을 활용해 자장가, 헌정곡 등 가족을 위한 음악을 직접 제작합니다.</p>
+            <h3>모차르트의 선율을 빌리다 — 멜로디 만들기</h3>
+            <p>모차르트가 선율을 구성한 방식을 프롬프트 언어로 번역합니다. 지휘자가 엄선한 프롬프트 사전으로 귀족적인 선율을 직접 만듭니다.</p>
           </div>
         </div>
         <div class="curriculum-item">
           <div class="week-num">3</div>
           <div class="curriculum-text">
-            <h3>힐링·명상 음악 제작 + 예술적 화성학 가이드</h3>
-            <p>수면, 명상, 집중에 최적화된 클래식 제작법. 화성학 기초를 활용해 감성적 완성도를 높이는 법을 배웁니다.</p>
+            <h3>베토벤의 감정을 빌리다 — 화성과 긴장감</h3>
+            <p>베토벤이 청중을 압도한 화성 구조의 비밀. 극적인 긴장감과 해소를 AI로 구현하는 법을 배웁니다.</p>
           </div>
         </div>
         <div class="curriculum-item">
           <div class="week-num">4</div>
           <div class="curriculum-text">
-            <h3>BGM 크리에이터 실전 + 최종 피드백</h3>
-            <p>유튜브·릴스에 바로 쓸 수 있는 BGM 제작 실전. 최종 결과물에 대한 지휘자의 1:1 피드백으로 마무리합니다.</p>
+            <h3>나만의 클래식 완성 — 지휘자 1:1 피드백</h3>
+            <p>1~3주에 배운 것을 통합해 나만의 클래식을 완성합니다. 결과물을 업로드하면 지휘자가 직접 피드백을 드립니다.</p>
           </div>
         </div>
       </div>
@@ -565,77 +621,23 @@
   <section id="pricing">
     <div class="container">
       <div class="section-eyebrow">수강 신청</div>
-      <h2 class="section-title">강의별로 구매하거나<br>전체 패키지로 시작하세요</h2>
-      <p class="section-desc">각 강의는 개별 구매 가능합니다. 전체 패키지 구매 시 할인이 적용됩니다. 모든 강의는 VOD 영구 소장입니다.</p>
+      <h2 class="section-title">당신의 클래식을<br>시작하세요</h2>
+      <p class="section-desc">모든 강의는 VOD 영구 소장입니다. 수강 후 오르골 패키지로 나만의 곡을 실물로 남길 수 있습니다.</p>
 
-      <div class="pricing-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 1rem;">
-        <div class="price-card">
-          <div class="price-tier">1강</div>
-          <div class="price-amount">3.9<span>만원</span></div>
-          <div class="price-note">AI 툴 기초 + 클래식 구조</div>
+      <div style="max-width: 420px; margin: 0 auto;">
+        <div class="price-card featured">
+          <div class="price-tier">4주 완성 VOD 강의</div>
+          <div class="price-amount">20<span>만원</span></div>
+          <div class="price-note">베토벤·모차르트 작곡법으로 배우는 AI 클래식</div>
           <div class="price-divider"></div>
           <ul class="price-features">
-            <li>Suno / Udio 기본 사용법</li>
-            <li>지휘자가 말하는 클래식 구조</li>
-            <li>샘플 프롬프트 제공</li>
-          </ul>
-          <a href="/checkout?lecture=1" class="price-btn">구매하기</a>
-        </div>
-        <div class="price-card">
-          <div class="price-tier">2강</div>
-          <div class="price-amount">3.9<span>만원</span></div>
-          <div class="price-note">프롬프트 사전 + 가족 테마</div>
-          <div class="price-divider"></div>
-          <ul class="price-features">
+            <li>베토벤·모차르트 작곡법 강의 전 4강</li>
             <li>지휘자 엄선 프롬프트 사전</li>
-            <li>자장가 · 헌정곡 실습</li>
-            <li>가족 테마 템플릿</li>
+            <li>매주 결과물 업로드 + 지휘자 직접 피드백</li>
+            <li>VOD 영구 소장</li>
           </ul>
-          <a href="/checkout?lecture=2" class="price-btn">구매하기</a>
+          <a href="/checkout" class="price-btn featured-btn">수강 신청하기 →</a>
         </div>
-        <div class="price-card">
-          <div class="price-tier">3강</div>
-          <div class="price-amount">3.9<span>만원</span></div>
-          <div class="price-note">힐링 음악 + 화성학 가이드</div>
-          <div class="price-divider"></div>
-          <ul class="price-features">
-            <li>명상 · 수면 음악 제작</li>
-            <li>예술적 화성학 가이드</li>
-            <li>힐링 테마 템플릿</li>
-          </ul>
-          <a href="/checkout?lecture=3" class="price-btn">구매하기</a>
-        </div>
-        <div class="price-card">
-          <div class="price-tier">4강</div>
-          <div class="price-amount">3.9<span>만원</span></div>
-          <div class="price-note">BGM 실전 + 지휘자 피드백</div>
-          <div class="price-divider"></div>
-          <ul class="price-features">
-            <li>크리에이터용 BGM 실전</li>
-            <li>결과물 업로드</li>
-            <li>지휘자 직접 댓글 피드백</li>
-          </ul>
-          <a href="/checkout?lecture=4" class="price-btn">구매하기</a>
-        </div>
-      </div>
-
-      <div class="price-card featured" style="max-width: 420px; margin: 0 auto;">
-        <div class="price-badge-wrap"><span class="price-badge">전체 패키지 — 가장 많이 선택</span></div>
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
-          <div>
-            <div class="price-tier" style="margin-top: 0.5rem;">1강 + 2강 + 3강 + 4강</div>
-            <div class="price-amount">12.9<span>만원</span></div>
-            <div class="price-note">개별 구매 대비 약 17% 할인</div>
-          </div>
-          <ul class="price-features" style="margin-bottom: 0; flex: 1; min-width: 180px;">
-            <li>전 강의 VOD 영구 소장</li>
-            <li>지휘자 엄선 프롬프트 사전 전체</li>
-            <li>모든 테마 템플릿 포함</li>
-            <li>결과물 업로드 + 지휘자 피드백</li>
-          </ul>
-        </div>
-        <div class="price-divider"></div>
-        <a href="/checkout?plan=all" class="price-btn featured-btn">전체 패키지 신청하기</a>
       </div>
     </div>
   </section>
@@ -671,5 +673,13 @@
     <p>© 2026 디지털 마에스트로 · 민병현 · 모든 권리 보유</p>
   </footer>
 
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open')
+    }
+    function closeMenu() {
+      document.getElementById('mobileMenu').classList.remove('open')
+    }
+  </script>
 </body>
 </html>
