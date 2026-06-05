@@ -304,7 +304,7 @@
   const { createClient } = supabase;
   const _supabase = createClient(
     'https://vdgpsejiagxnrilcnqag.supabase.co',
-    'sb_publishable_czh60ItKuAVBkj3TAFBKXw_-Kz2QseH'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkZ3BzZWpsYWd4bnJpbGNucWFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDE2MTIsImV4cCI6MjA5NTkxNzYxMn0.YU_fHHh_UZ0MQLLlRPXr-ZNz5vq2Xb9TbK5iH7Q9BHg'
   );
 
   async function checkSession() {
@@ -343,7 +343,7 @@
   function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
   function closeMenu()  { document.getElementById('mobileMenu').classList.remove('open'); }
 
-  window.addEventListener('load', checkSession);
+  checkSession();
 </script>
 </body>
 </html>
