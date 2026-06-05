@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>수강 신청 — 디지털 마에스트로</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nanum Gothic', sans-serif; background: #f5f5f0; color: #1a1a1a; min-height: 100vh; }
+
+    header { background: #fff; border-bottom: 1px solid #e8e8e4; padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 16px; font-weight: 700; color: #1a1a1a; text-decoration: none; }
+    .logo span { color: #185FA5; }
+
+    .page { max-width: 560px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+    /* 상품 박스 */
+    .product-box { background: #eeede6; border-radius: 12px; padding: 1.25rem; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: flex-start; }
+    .product-icon { width: 52px; height: 52px; border-radius: 10px; background: #b5c9e0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .product-icon svg { width: 26px; height: 26px; fill: #185FA5; }
+    .product-name { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+    .product-desc { font-size: 13px; color: #666; }
+    .product-price { font-size: 22px; font-weight: 700; margin-top: 8px; }
+    .product-price small { font-size: 13px; font-weight: 400; color: #888; }
+
+    /* 섹션 타이틀 */
+    .section-title { font-size: 15px; font-weight: 700; margin-bottom: 0.75rem; }
+
+    /* 결제 수단 */
+    .payment-methods { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+    .pay-method { flex: 1; border: 1px solid #ddd; border-radius: 10px; padding: 12px 6px; text-align: center; cursor: pointer; font-size: 13px; color: #555; background: #fff; transition: all 0.15s; }
+    .pay-method svg { display: block; width: 22px; height: 22px; margin: 0 auto 5px; stroke: #555; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .pay-method.active { font-weight: 700; }
+    .pay-method.active-card { border: 2px solid #185FA5; color: #185FA5; }
+    .pay-method.active-card svg { stroke: #185FA5; }
+    .pay-method.active-kakao { border: 2px solid #D4A600; background: #FEE500; color: #3A1D1D; }
+    .pay-method.active-kakao svg { stroke: #3A1D1D; }
+    .pay-method.active-naver { border: 2px solid #02a44a; background: #03C75A; color: #fff; }
+    .pay-method.active-naver svg { stroke: #fff; }
+    .pay-method.active-transfer { border: 2px solid #185FA5; color: #185FA5; }
+    .pay-method.active-transfer svg { stroke: #185FA5; }
+
+    /* 안내 박스 */
+    .simple-notice { border-radius: 10px; padding: 1.1rem 1.25rem; margin-bottom: 1.5rem; font-size: 14px; text-align: center; display: none; font-weight: 400; }
+    .notice-kakao { background: #FEE500; color: #3A1D1D; }
+    .notice-naver { background: #03C75A; color: #fff; }
+    .notice-transfer { background: #f0f0ec; color: #555; border: 1px solid #ddd; }
+
+    /* 카드 폼 */
+    .card-form { margin-bottom: 1.5rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-full { grid-column: 1 / -1; }
+    .field { display: flex; flex-direction: column; }
+    .field label { font-size: 12px; color: #888; margin-bottom: 5px; }
+    .field input { padding: 11px 13px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: 'Nanum Gothic', sans-serif; background: #fff; outline: none; transition: border-color 0.15s; }
+    .field input:focus { border-color: #185FA5; }
+    .field input::placeholder { color: #ccc; }
+
+    /* 연락처 */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 2rem; }
+
+    /* 구분선 */
+    .divider { height: 1px; background: #e0e0da; margin: 1.5rem 0; }
+
+    /* 주문 요약 */
+    .order-row { display: flex; justify-content: space-between; font-size: 14px; color: #888; padding: 5px 0; }
+    .order-total { display: flex; justify-content: space-between; font-size: 17px; font-weight: 700; color: #1a1a1a; padding-top: 12px; border-top: 1px solid #ccc; margin-top: 8px; }
+
+    /* 동의 */
+    .agrees { margin: 1.5rem 0 0; }
+    .agree-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+    .agree-row input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: #185FA5; }
+    .agree-row label { font-size: 13px; color: #888; line-height: 1.5; cursor: pointer; }
+    .agree-row a { color: #185FA5; text-decoration: underline; }
+
+    /* 결제 버튼 */
+    .pay-btn { width: 100%; padding: 15px; font-size: 16px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 1.25rem; font-family: 'Nanum Gothic', sans-serif; transition: opacity 0.15s; }
+    .pay-btn:hover { opacity: 0.88; }
+    .pay-btn:active { transform: scale(0.99); }
+    .btn-card     { background: #1a1a1a; color: #fff; }
+    .btn-kakao    { background: #FEE500; color: #3A1D1D; border: 1px solid #D4A600; }
+    .btn-naver    { background: #03C75A; color: #fff; }
+    .btn-transfer { background: #1a1a1a; color: #fff; }
+
+    .secure-note { text-align: center; font-size: 12px; color: #bbb; margin-top: 0.75rem; }
+
+    @media (max-width: 480px) {
+      .form-grid, .contact-grid { grid-template-columns: 1fr; }
+      .form-full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">디지털 <span>마에스트로</span></a>
+</header>
+
+<div class="page">
+
+  <!-- 상품 -->
+  <div class="product-box">
+    <div class="product-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18V5l12-2v13M9 18c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-2c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/></svg>
+    </div>
+    <div>
+      <p class="product-name">디지털 마에스트로</p>
+      <p class="product-desc">지휘자가 알려주는 AI 클래식 작곡법 · VOD 8강</p>
+      <p class="product-price">200,000<small>원 (VAT 포함)</small></p>
+    </div>
+  </div>
+
+  <!-- 결제 수단 -->
+  <p class="section-title">결제 수단</p>
+  <div class="payment-methods">
+    <div class="pay-method active active-card" id="pm-card" onclick="selectMethod('card')">
+      <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      신용카드
+    </div>
+    <div class="pay-method" id="pm-kakao" onclick="selectMethod('kakao')">
+      <svg viewBox="0 0 24 24"><path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.667 1.58 5.01 4 6.364V21l3.5-2.5c.814.13 1.645.2 2.5.2 5.523 0 10-3.477 10-7.7S17.523 3 12 3z"/></svg>
+      카카오페이
+    </div>
+    <div class="pay-method" id="pm-naver" onclick="selectMethod('naver')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M10 8v8l4-4-4-4zm0 4h4"/></svg>
+      네이버페이
+    </div>
+    <div class="pay-method" id="pm-transfer" onclick="selectMethod('transfer')">
+      <svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 10v11M12 10v11M16 10v11"/></svg>
+      계좌이체
+    </div>
+  </div>
+
+  <!-- 카드 폼 -->
+  <div class="card-form" id="card-form">
+    <p class="section-title">카드 정보</p>
+    <div class="form-grid">
+      <div class="field form-full">
+        <label>카드 번호</label>
+        <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)" />
+      </div>
+      <div class="field">
+        <label>유효기간</label>
+        <input type="text" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)" />
+      </div>
+      <div class="field">
+        <label>CVC</label>
+        <input type="text" placeholder="000" maxlength="3" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 간편결제 안내 -->
+  <div class="simple-notice" id="simple-notice">
+    <span id="notice-icon">↗</span> 결제 버튼 클릭 시 <strong id="pay-name">카카오페이</strong> 앱으로 연결됩니다.
+  </div>
+
+  <!-- 연락처 -->
+  <p class="section-title">연락처</p>
+  <div class="contact-grid">
+    <div class="field">
+      <label>이름</label>
+      <input type="text" placeholder="홍길동" />
+    </div>
+    <div class="field">
+      <label>연락처</label>
+      <input type="text" placeholder="010-0000-0000" />
+    </div>
+    <div class="field form-full" style="grid-column: 1/-1;">
+      <label>이메일 (강의 링크 발송)</label>
+      <input type="email" placeholder="example@email.com" />
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="order-row"><span>강의 금액</span><span>200,000원</span></div>
+  <div class="order-row"><span>VAT (포함)</span><span>18,182원</span></div>
+  <div class="order-total"><span>최종 결제금액</span><span>200,000원</span></div>
+
+  <div class="agrees">
+    <div class="agree-row">
+      <input type="checkbox" id="agree1" />
+      <label for="agree1"><a href="#">개인정보 처리방침</a> 및 <a href="#">이용약관</a>에 동의합니다 (필수)</label>
+    </div>
+    <div class="agree-row">
+      <input type="checkbox" id="agree2" />
+      <label for="agree2">마케팅 수신 동의 (선택)</label>
+    </div>
+  </div>
+
+  <button class="pay-btn btn-card" id="pay-btn" onclick="handlePay()">
+    <span id="pay-btn-text">200,000원 결제하기</span>
+  </button>
+  <p class="secure-note">🔒 SSL 보안 결제 · 개인정보 암호화 처리</p>
+
+</div>
+
+<script>
+  function selectMethod(method) {
+    ['card','kakao','naver','transfer'].forEach(m => {
+      const el = document.getElementById('pm-' + m);
+      el.className = 'pay-method';
+    });
+    document.getElementById('pm-' + method).className = 'pay-method active active-' + method;
+
+    const names = { kakao: '카카오페이', naver: '네이버페이', transfer: '계좌이체' };
+    const btn = document.getElementById('pay-btn');
+    const notice = document.getElementById('simple-notice');
+    btn.className = 'pay-btn btn-' + method;
+
+    if (method === 'card') {
+      document.getElementById('card-form').style.display = 'block';
+      notice.style.display = 'none';
+      document.getElementById('pay-btn-text').textContent = '200,000원 결제하기';
+    } else {
+      document.getElementById('card-form').style.display = 'none';
+      notice.style.display = 'block';
+      notice.className = 'simple-notice notice-' + method;
+      document.getElementById('pay-name').textContent = names[method];
+      document.getElementById('pay-btn-text').textContent = names[method] + '로 결제하기';
+    }
+  }
+
+  function formatCard(el) {
+    let v = el.value.replace(/\D/g,'').substring(0,16);
+    el.value = v.match(/.{1,4}/g)?.join(' ') || v;
+  }
+
+  function formatExpiry(el) {
+    let v = el.value.replace(/\D/g,'').substring(0,4);
+    if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
+    el.value = v;
+  }
+
+  function handlePay() {
+    if (!document.getElementById('agree1').checked) {
+      alert('이용약관에 동의해주세요.');
+      return;
+    }
+    window.location.href = 'complete.html';
+  }
+</script>
+</body>
+</html>

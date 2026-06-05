@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>결제 완료 — 디지털 마에스트로</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nanum Gothic', sans-serif; background: #f5f5f3; color: #1a1a1a; min-height: 100vh; }
+
+    header { background: #fff; border-bottom: 1px solid #e8e8e4; padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 16px; font-weight: 700; color: #1a1a1a; text-decoration: none; }
+    .logo span { color: #185FA5; }
+
+    .page { max-width: 520px; margin: 0 auto; padding: 3rem 1rem 4rem; text-align: center; }
+
+    .check-circle {
+      width: 80px; height: 80px; border-radius: 50%; background: #EAF3DE;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem; font-size: 36px;
+      animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .complete-title { font-size: 22px; font-weight: 700; margin-bottom: 0.5rem; animation: fadeUp 0.4s 0.15s ease both; }
+    .complete-sub { font-size: 14px; color: #888; line-height: 1.8; margin-bottom: 2rem; animation: fadeUp 0.4s 0.25s ease both; }
+    @keyframes fadeUp {
+      0% { transform: translateY(8px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .receipt { background: #fff; border-radius: 12px; border: 1px solid #e8e8e4; padding: 1.25rem; text-align: left; margin-bottom: 1.5rem; animation: fadeUp 0.4s 0.3s ease both; }
+    .receipt-label { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .receipt-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #888; padding: 6px 0; border-bottom: 1px solid #f0f0ee; }
+    .receipt-row:last-child { border-bottom: none; }
+    .receipt-row strong { color: #1a1a1a; font-weight: 700; }
+
+    .info-box { background: #E6F1FB; border-radius: 10px; padding: 1rem 1.25rem; text-align: left; margin-bottom: 2rem; font-size: 13px; color: #185FA5; line-height: 1.7; animation: fadeUp 0.4s 0.35s ease both; }
+
+    .btn-primary { display: block; width: 100%; padding: 14px; font-size: 15px; font-weight: 700; background: #1a1a1a; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-family: 'Nanum Gothic', sans-serif; text-decoration: none; margin-bottom: 10px; animation: fadeUp 0.4s 0.4s ease both; }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary { display: block; width: 100%; padding: 13px; font-size: 14px; color: #888; background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; cursor: pointer; font-family: 'Nanum Gothic', sans-serif; text-decoration: none; animation: fadeUp 0.4s 0.45s ease both; }
+    .btn-secondary:hover { background: #f5f5f3; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">디지털 <span>마에스트로</span></a>
+</header>
+
+<div class="page">
+
+  <div class="check-circle">✅</div>
+
+  <p class="complete-title">결제가 완료되었습니다</p>
+  <p class="complete-sub">디지털 마에스트로 수강 신청이 확정되었어요.<br>입력하신 이메일로 강의 링크를 발송했습니다.</p>
+
+  <div class="receipt">
+    <p class="receipt-label">결제 내역</p>
+    <div class="receipt-row"><span>상품명</span><strong>디지털 마에스트로</strong></div>
+    <div class="receipt-row"><span>결제 금액</span><strong>200,000원</strong></div>
+    <div class="receipt-row"><span>결제 수단</span><strong>신용카드</strong></div>
+    <div class="receipt-row"><span>결제 일시</span><strong id="pay-date"></strong></div>
+    <div class="receipt-row"><span>주문 번호</span><strong id="order-num"></strong></div>
+  </div>
+
+  <div class="info-box">
+    📧 강의 수강 링크는 <strong>가입 이메일</strong>로 발송되었습니다.<br>
+    메일이 오지 않으면 스팸함을 확인하거나 고객센터로 문의해주세요.
+  </div>
+
+  <a href="dashboard.html" class="btn-primary">▶ 강의 바로 시작하기</a>
+  <a href="index.html" class="btn-secondary">홈으로 돌아가기</a>
+
+</div>
+
+<script>
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('pay-date').textContent =
+    `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const rand = String(Math.floor(Math.random() * 9000) + 1000);
+  document.getElementById('order-num').textContent =
+    `DM-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${rand}`;
+</script>
+</body>
+</html>
