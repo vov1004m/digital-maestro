@@ -307,11 +307,13 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkZ3BzZWpsYWd4bnJpbGNucWFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDE2MTIsImV4cCI6MjA5NTkxNzYxMn0.YU_fHHh_UZ0MQLLlRPXr-ZNz5vq2Xb9TbK5iH7Q9BHg'
   );
 
-  async function checkSession() {
+  function checkSession() {
     try {
-      const { data: { session } } = await _supabase.auth.getSession();
-      if (!session) return;
-      const user = session.user;
+      const raw = localStorage.getItem('sb-vdgpsejlagxnrilcnqag-auth-token');
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      const user = data.user;
+      if (!user) return;
       document.getElementById('nav-login').style.display = 'none';
       const navUser = document.getElementById('nav-user');
       navUser.style.display = 'flex';
