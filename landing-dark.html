@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>디지털 마에스트로</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #080808;
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dim: rgba(201,168,76,0.15);
+      --white: #F5F0E8;
+      --gray: #888;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Noto Sans KR', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* 커스텀 커서 */
+    .cursor {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--gold); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s;
+    }
+    .cursor-ring {
+      position: fixed; width: 32px; height: 32px;
+      border: 1px solid rgba(201,168,76,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.15s ease;
+    }
+
+    /* 노이즈 오버레이 */
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1; opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+    }
+    .nav-logo {
+      font-family: var(--serif); font-size: 16px; font-weight: 400;
+      color: var(--gold); text-decoration: none; letter-spacing: 0.1em;
+    }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(245,240,232,0.6); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-btn {
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--black) !important; background: var(--gold);
+      padding: 8px 20px; border-radius: 0; transition: background 0.2s !important;
+    }
+    .nav-btn:hover { background: var(--gold-light) !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 0 3rem 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 40%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.05) 0%, transparent 50%);
+    }
+    /* 악보 라인 장식 */
+    .staff-lines {
+      position: absolute; top: 30%; left: 0; right: 0;
+      opacity: 0.06; pointer-events: none;
+    }
+    .staff-lines span {
+      display: block; height: 1px; background: var(--gold);
+      margin-bottom: 18px;
+    }
+    /* 음표 장식 */
+    .note-deco {
+      position: absolute; font-size: 120px; color: var(--gold);
+      opacity: 0.04; font-family: var(--serif); pointer-events: none;
+      animation: float 8s ease-in-out infinite;
+    }
+    .note-deco:nth-child(1) { top: 15%; right: 8%; font-size: 200px; animation-delay: 0s; }
+    .note-deco:nth-child(2) { top: 45%; right: 20%; font-size: 80px; animation-delay: 2s; }
+    .note-deco:nth-child(3) { top: 65%; right: 5%; font-size: 140px; animation-delay: 4s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .hero-eyebrow {
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 40px; height: 1px; background: var(--gold);
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      animation: fadeUp 1s 0.4s ease both;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--gold);
+      display: block;
+    }
+    .hero-sub {
+      font-size: 16px; color: rgba(245,240,232,0.55);
+      max-width: 480px; line-height: 1.9;
+      margin-bottom: 3rem;
+      animation: fadeUp 1s 0.6s ease both;
+    }
+    .hero-cta {
+      display: flex; gap: 1.5rem; align-items: center;
+      animation: fadeUp 1s 0.8s ease both;
+    }
+    .btn-gold {
+      display: inline-block; padding: 16px 40px;
+      background: var(--gold); color: var(--black);
+      font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+      text-decoration: none; font-weight: 500;
+      transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .btn-gold::after {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold-light); transform: translateX(-100%);
+      transition: transform 0.3s;
+    }
+    .btn-gold:hover::after { transform: translateX(0); }
+    .btn-gold span { position: relative; z-index: 1; }
+    .btn-outline {
+      display: inline-block; padding: 15px 40px;
+      border: 1px solid rgba(201,168,76,0.4); color: var(--gold);
+      font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); background: var(--gold-dim); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; right: 3rem;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      animation: fadeUp 1s 1s ease both;
+    }
+    .hero-scroll span { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gray); writing-mode: vertical-rl; }
+    .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s infinite; }
+    @keyframes scrollPulse { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* STATS */
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(201,168,76,0.2);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .stat {
+      padding: 3rem; text-align: center;
+      border-right: 1px solid rgba(201,168,76,0.2);
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .stat:last-child { border-right: none; }
+    .stat:hover { background: var(--gold-dim); }
+    .stat-num {
+      font-family: var(--serif); font-size: 56px; font-weight: 700;
+      color: var(--gold); line-height: 1; display: block; margin-bottom: 0.5rem;
+    }
+    .stat-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); }
+
+    /* SECTION 공통 */
+    .section { padding: 8rem 3rem; position: relative; }
+    .section-label {
+      font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after { content: ''; flex: 0 0 30px; height: 1px; background: var(--gold); }
+    .section-title {
+      font-family: var(--serif); font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700; line-height: 1.15; margin-bottom: 1.5rem;
+    }
+
+    /* WHY */
+    .why { background: linear-gradient(135deg, #0d0d0d 0%, #080808 100%); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(201,168,76,0.15); margin-top: 4rem; }
+    .why-card {
+      background: #0a0a0a; padding: 3rem;
+      transition: background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .why-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 0; background: var(--gold);
+      transition: height 0.4s;
+    }
+    .why-card:hover { background: #0e0e0e; }
+    .why-card:hover::before { height: 100%; }
+    .why-num {
+      font-family: var(--serif); font-size: 64px; font-weight: 900;
+      color: rgba(201,168,76,0.12); line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .why-card h3 { font-family: var(--serif); font-size: 22px; font-weight: 700; margin-bottom: 1rem; }
+    .why-card p { font-size: 14px; color: rgba(245,240,232,0.55); line-height: 1.85; }
+
+    /* CURRICULUM */
+    .curriculum { background: #060606; }
+    .curriculum-inner { max-width: 800px; }
+    .curr-item {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 0; border-bottom: 1px solid rgba(201,168,76,0.1);
+      transition: background 0.2s; cursor: default;
+    }
+    .curr-item:hover { background: var(--gold-dim); }
+    .curr-num {
+      padding: 2.5rem; font-family: var(--serif); font-size: 48px;
+      font-weight: 900; color: rgba(201,168,76,0.2); line-height: 1;
+      border-right: 1px solid rgba(201,168,76,0.1);
+    }
+    .curr-content { padding: 2.5rem; }
+    .curr-week { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .curr-content h3 { font-family: var(--serif); font-size: 20px; font-weight: 700; margin-bottom: 0.75rem; }
+    .curr-content p { font-size: 13px; color: rgba(245,240,232,0.5); line-height: 1.8; }
+    .curr-time { font-size: 11px; color: var(--gold); margin-top: 0.75rem; letter-spacing: 0.1em; }
+
+    /* COMPOSER */
+    .composer { background: #080808; }
+    .composer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; margin-top: 4rem; }
+    .composer-visual {
+      position: relative; aspect-ratio: 3/4; background: #111;
+      overflow: hidden;
+    }
+    .composer-visual img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center top;
+      filter: grayscale(30%) contrast(1.1);
+      transition: transform 0.6s;
+    }
+    .composer-visual:hover img { transform: scale(1.03); }
+    .composer-visual::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.6) 0%, transparent 50%);
+    }
+    .composer-frame {
+      position: absolute; inset: 12px;
+      border: 1px solid rgba(201,168,76,0.3);
+      pointer-events: none; z-index: 1;
+    }
+    .composer-name { font-family: var(--serif); font-size: 42px; font-weight: 900; margin-bottom: 0.5rem; }
+    .composer-title { font-size: 13px; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 2rem; }
+    .composer-bio { font-size: 15px; color: rgba(245,240,232,0.6); line-height: 1.9; margin-bottom: 2rem; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+      border: 1px solid rgba(201,168,76,0.3); color: var(--gold);
+      padding: 5px 14px;
+    }
+
+    /* PRICING */
+    .pricing { background: #060606; }
+    .price-wrap {
+      max-width: 560px; margin: 4rem auto 0;
+      border: 1px solid rgba(201,168,76,0.4);
+      position: relative;
+    }
+    .price-corner {
+      position: absolute; width: 20px; height: 20px;
+      border-color: var(--gold); border-style: solid;
+    }
+    .price-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .price-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+    .price-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+    .price-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+    .price-inner { padding: 3.5rem; }
+    .price-badge {
+      display: inline-block; font-size: 10px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--black); background: var(--gold);
+      padding: 4px 14px; margin-bottom: 2rem;
+    }
+    .price-amount {
+      font-family: var(--serif); font-size: 72px; font-weight: 900;
+      color: var(--gold); line-height: 1; margin-bottom: 0.25rem;
+    }
+    .price-amount sup { font-size: 24px; vertical-align: super; }
+    .price-note { font-size: 12px; color: var(--gray); margin-bottom: 2.5rem; letter-spacing: 0.05em; }
+    .price-divider { height: 1px; background: rgba(201,168,76,0.2); margin-bottom: 2rem; }
+    .price-list { list-style: none; margin-bottom: 2.5rem; }
+    .price-list li {
+      font-size: 14px; color: rgba(245,240,232,0.7);
+      padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .price-list li::before {
+      content: ''; display: block; width: 16px; height: 1px;
+      background: var(--gold); flex-shrink: 0;
+    }
+
+    /* FOOTER CTA */
+    .footer-cta {
+      padding: 8rem 3rem; text-align: center;
+      background: linear-gradient(135deg, #0d0d0d, #080808);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      position: relative; overflow: hidden;
+    }
+    .footer-cta::before {
+      content: '♪'; font-family: var(--serif);
+      position: absolute; font-size: 400px; color: var(--gold);
+      opacity: 0.03; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .footer-cta h2 { font-family: var(--serif); font-size: clamp(36px, 6vw, 72px); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; }
+    .footer-cta h2 em { font-style: italic; color: var(--gold); }
+    .footer-cta p { font-size: 15px; color: var(--gray); margin-bottom: 3rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 3rem; border-top: 1px solid rgba(201,168,76,0.1);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer p { font-size: 11px; color: rgba(245,240,232,0.3); letter-spacing: 0.05em; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 11px; color: rgba(245,240,232,0.3); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 0 1.5rem 4rem; }
+      .section { padding: 5rem 1.5rem; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 1px solid rgba(201,168,76,0.2); }
+      .why-grid { grid-template-columns: 1fr; }
+      .composer-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">디지털 마에스트로</a>
+  <div class="nav-links">
+    <a href="#why">강의 소개</a>
+    <a href="#curriculum">커리큘럼</a>
+    <a href="#instructor">강사</a>
+    <a href="/checkout" class="nav-btn">수강 신청</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="staff-lines">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="note-deco">♪</div>
+  <div class="note-deco">♩</div>
+  <div class="note-deco">♫</div>
+
+  <div style="position:relative; z-index:2;">
+    <p class="hero-eyebrow">AI 클래식 마스터클래스</p>
+    <h1>
+      베토벤과<br>모차르트의<br>
+      <em>언어로 만드는<br>나만의 클래식</em>
+    </h1>
+    <p class="hero-sub">15년 차 지휘자가 거장들의 화성과 구조를 AI 언어로 번역합니다. 악보를 몰라도, 악기를 못 해도 됩니다.</p>
+    <div class="hero-cta">
+      <a href="/checkout" class="btn-gold"><span>수강 신청하기 →</span></a>
+      <a href="#curriculum" class="btn-outline">커리큘럼 보기</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <span class="stat-num">15</span>
+    <span class="stat-label">Years of Conducting</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">4</span>
+    <span class="stat-label">Weeks · 8 Lessons</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">1:1</span>
+    <span class="stat-label">Direct Feedback</span>
+  </div>
+</div>
+
+<!-- WHY -->
+<section class="section why" id="why">
+  <p class="section-label">왜 이 강의인가</p>
+  <h2 class="section-title">AI 음악이<br>왜 다 비슷하게<br>들릴까요</h2>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <h3>프롬프트만으로는 부족하다</h3>
+      <p>AI 툴은 누구나 쓸 수 있습니다. 하지만 위대한 작곡가들의 언어를 알아야 진짜 클래식이 나옵니다.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <h3>화성학을 몰라도 됩니다</h3>
+      <p>베토벤의 화음, 모차르트의 선율 구조. 악보 없이 지휘자의 언어로 쉽게 풀어드립니다.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <h3>아무나 만들 수 없는 클래식</h3>
+      <p>같은 AI 툴을 써도 결과물이 다릅니다. 거장들의 문법을 아는 사람의 음악은 다릅니다.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <h3>지휘자가 직접 피드백</h3>
+      <p>매주 결과물을 올리면 지휘자가 직접 피드백을 드립니다. 기수별 소수 정예로 운영됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="section curriculum" id="curriculum">
+  <p class="section-label">커리큘럼</p>
+  <h2 class="section-title">4주 완성<br>거장의 작곡법</h2>
+  <div class="curriculum-inner">
+    <div class="curr-item">
+      <div class="curr-num">1</div>
+      <div class="curr-content">
+        <p class="curr-week">Week 01</p>
+        <h3>클래식이란 무엇인가</h3>
+        <p>지휘자의 귀로 듣는 법. Suno 기초 사용법, 베토벤·모차르트가 300년을 살아남은 이유, 클래식의 4단계 구조.</p>
+        <p class="curr-time">45min</p>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-num">2</div>
+      <div class="curr-content">
+        <p class="curr-week">Week 02</p>
+        <h3>모차르트의 선율을 빌리다</h3>
+        <p>멜로디 만들기. 모차르트 선율의 구조적 비밀을 프롬프트 언어로 번역하고 서정적인 멜로디를 완성합니다.</p>
+        <p class="curr-time">45min</p>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-num">3</div>
+      <div class="curr-content">
+        <p class="curr-week">Week 03</p>
+        <h3>베토벤의 감정을 빌리다</h3>
+        <p>화성과 긴장감. 베토벤이 청중을 압도한 화성 구조의 비밀을 해부하고, 극적인 흐름을 Suno로 구현합니다.</p>
+        <p class="curr-time">45min</p>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-num">4</div>
+      <div class="curr-content">
+        <p class="curr-week">Week 04</p>
+        <h3>나만의 클래식 완성</h3>
+        <p>지휘자 1:1 피드백. 1~3강의 선율과 화성을 통합해 나만의 클래식을 완성하고 지휘자의 최종 피드백을 받습니다.</p>
+        <p class="curr-time">45min</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="section composer" id="instructor">
+  <p class="section-label">강사 소개</p>
+  <div class="composer-grid">
+    <div class="composer-visual">
+      <img src="instructor.png" alt="민병현 지휘자" />
+      <div class="composer-frame"></div>
+    </div>
+    <div>
+      <h2 class="composer-name">민병현</h2>
+      <p class="composer-title">지휘자 · 음악감독 · 클래식도슨트</p>
+      <p class="composer-bio">파주 DMZ 필하모닉 오케스트라, 드림챔버오케스트라 상임지휘자. 오케스트라 지휘부터 뮤지컬 음악감독, 앨범 프로듀싱까지 — 15년 넘게 클래식의 모든 현장을 누빈 지휘자입니다.</p>
+      <p class="composer-bio">한국예술종합학교 지휘과 졸업. 클래식도슨트 채널을 통해 어렵게만 느껴지던 클래식을 누구나 가까이 할 수 있는 언어로 풀어내고 있습니다.</p>
+      <div class="tag-row">
+        <span class="tag">한국예술종합학교</span>
+        <span class="tag">DMZ 필하모닉</span>
+        <span class="tag">드림챔버오케스트라</span>
+        <span class="tag">클래식도슨트</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section pricing" id="pricing">
+  <p class="section-label">수강 신청</p>
+  <h2 class="section-title" style="text-align:center;">당신의 클래식을<br>시작하세요</h2>
+  <div class="price-wrap">
+    <div class="price-corner tl"></div>
+    <div class="price-corner tr"></div>
+    <div class="price-corner bl"></div>
+    <div class="price-corner br"></div>
+    <div class="price-inner">
+      <span class="price-badge">4주 완성 VOD 강의</span>
+      <div class="price-amount"><sup>₩</sup>200,000</div>
+      <p class="price-note">VAT 포함 · 영구 소장</p>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>베토벤·모차르트 작곡법 강의 전 4강 (각 45분)</li>
+        <li>지휘자 엄선 프롬프트 사전</li>
+        <li>매주 우수작 선정 + 지휘자 총평</li>
+        <li>매주 결과물 업로드 + 지휘자 직접 피드백</li>
+        <li>기수별 인원 제한 운영</li>
+        <li>VOD 영구 소장</li>
+      </ul>
+      <a href="/checkout" class="btn-gold" style="display:block; text-align:center;"><span>수강 신청하기 →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<section class="footer-cta">
+  <h2>지금 바로<br><em>시작하세요</em></h2>
+  <p>지휘자의 귀를 빌려, 세상에 단 하나뿐인 음악을 만들어보세요.</p>
+  <a href="/checkout" class="btn-gold"><span>수강 신청하기 →</span></a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 디지털 마에스트로 · 헤르츠뮤직</p>
+  <div class="footer-links">
+    <a href="/terms">이용약관</a>
+    <a href="/privacy">개인정보처리방침</a>
+    <a href="/refund">환불 정책</a>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 80);
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '48px'; ring.style.height = '48px';
+      ring.style.borderColor = 'var(--gold)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '32px'; ring.style.height = '32px';
+      ring.style.borderColor = 'rgba(201,168,76,0.5)';
+    });
+  });
+
+  // 스크롤 페이드인
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.why-card, .curr-item, .stat').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
