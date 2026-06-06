@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>디지털 마에스트로</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #F5F0E6;
+      --warm: #EDE5D4;
+      --warm-2: #E0D5C0;
+      --brown: #2C1F0E;
+      --brown-2: #5C4A2A;
+      --brown-3: #8B7355;
+      --teal: #2D6A5A;
+      --teal-light: #E8F2EF;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--brown);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(245,240,230,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--warm-2);
+      padding: 0 3rem; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--brown); text-decoration: none; letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 13px; color: var(--brown-3); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--brown); }
+    .nav-btn {
+      font-size: 12px; letter-spacing: 0.1em;
+      background: var(--brown); color: var(--cream) !important;
+      padding: 9px 22px; border-radius: 100px;
+      transition: background 0.2s !important;
+    }
+    .nav-btn:hover { background: var(--brown-2) !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      position: relative; overflow: hidden;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 4rem 6rem 3rem;
+      position: relative; z-index: 2;
+    }
+    .hero-right {
+      position: relative; overflow: hidden;
+      background: var(--warm);
+    }
+    .hero-right img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      filter: sepia(15%) contrast(1.05);
+    }
+    .hero-right::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--cream) 0%, transparent 30%);
+    }
+    /* 원형 장식 */
+    .hero-circle {
+      position: absolute; border-radius: 50%;
+      border: 1px solid var(--warm-2); pointer-events: none;
+    }
+    .hero-circle.c1 { width: 600px; height: 600px; top: -200px; right: -200px; opacity: 0.5; }
+    .hero-circle.c2 { width: 400px; height: 400px; top: -100px; right: -100px; opacity: 0.3; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--teal); background: var(--teal-light);
+      padding: 6px 16px; border-radius: 100px;
+      margin-bottom: 2rem; width: fit-content;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .hero-tag::before { content: '♪'; font-size: 14px; }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(42px, 5.5vw, 80px);
+      font-weight: 300; line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.8s 0.35s ease both;
+    }
+    .hero h1 strong { font-weight: 600; display: block; }
+    .hero h1 em { font-style: italic; color: var(--teal); display: block; }
+
+    .hero-desc {
+      font-size: 15px; color: var(--brown-3);
+      line-height: 1.9; max-width: 420px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+    .hero-cta {
+      display: flex; gap: 1rem; align-items: center;
+      animation: fadeUp 0.8s 0.65s ease both;
+    }
+    .btn-brown {
+      display: inline-block; padding: 14px 32px;
+      background: var(--brown); color: var(--cream);
+      font-size: 13px; border-radius: 100px;
+      text-decoration: none; transition: all 0.2s;
+      font-family: var(--sans);
+    }
+    .btn-brown:hover { background: var(--brown-2); transform: translateY(-1px); }
+    .btn-text {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--brown-3);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .btn-text:hover { color: var(--brown); }
+    .btn-text::after { content: '→'; transition: transform 0.2s; }
+    .btn-text:hover::after { transform: translateX(4px); }
+
+    .hero-stats {
+      display: flex; gap: 2rem; margin-top: 3.5rem; padding-top: 2rem;
+      border-top: 1px solid var(--warm-2);
+      animation: fadeUp 0.8s 0.8s ease both;
+    }
+    .stat-item { }
+    .stat-num { font-family: var(--serif); font-size: 32px; font-weight: 600; color: var(--brown); display: block; line-height: 1; }
+    .stat-label { font-size: 11px; color: var(--brown-3); margin-top: 4px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ABOUT */
+    .about {
+      padding: 7rem 3rem;
+      background: var(--warm);
+      display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start;
+    }
+    .about-sticky { position: sticky; top: 100px; }
+    .section-label { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--brown-3); margin-bottom: 1rem; }
+    .section-title { font-family: var(--serif); font-size: clamp(28px, 4vw, 48px); font-weight: 400; line-height: 1.2; }
+    .section-title strong { font-weight: 600; }
+
+    .about-cards { display: flex; flex-direction: column; gap: 1px; background: var(--warm-2); }
+    .about-card {
+      background: var(--warm); padding: 2.5rem;
+      display: grid; grid-template-columns: 48px 1fr; gap: 1.5rem;
+      transition: background 0.2s;
+    }
+    .about-card:hover { background: #e8dfc8; }
+    .about-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--cream); display: flex; align-items: center;
+      justify-content: center; font-size: 20px; flex-shrink: 0;
+    }
+    .about-card h3 { font-family: var(--serif); font-size: 20px; font-weight: 600; margin-bottom: 0.5rem; }
+    .about-card p { font-size: 13px; color: var(--brown-3); line-height: 1.8; }
+
+    /* CURRICULUM */
+    .curriculum { padding: 7rem 3rem; background: var(--cream); }
+    .curriculum-header { max-width: 480px; margin-bottom: 4rem; }
+    .curr-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .curr-card {
+      background: var(--warm); border-radius: 16px;
+      padding: 2.5rem; position: relative; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .curr-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(44,31,14,0.1); }
+    .curr-card::before {
+      content: attr(data-week);
+      position: absolute; top: -10px; right: 16px;
+      font-family: var(--serif); font-size: 80px; font-weight: 600;
+      color: rgba(44,31,14,0.06); line-height: 1;
+    }
+    .curr-week-tag {
+      display: inline-block; font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--teal);
+      background: var(--teal-light); padding: 3px 10px;
+      border-radius: 100px; margin-bottom: 1rem;
+    }
+    .curr-card h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; margin-bottom: 0.75rem; line-height: 1.3; }
+    .curr-card p { font-size: 13px; color: var(--brown-3); line-height: 1.8; }
+    .curr-time { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--brown-3); margin-top: 1.25rem; }
+    .curr-time::before { content: '⏱'; font-size: 12px; }
+
+    /* WHO */
+    .who { padding: 7rem 3rem; background: var(--teal); color: var(--cream); }
+    .who-title { font-family: var(--serif); font-size: clamp(32px, 5vw, 60px); font-weight: 300; line-height: 1.15; margin-bottom: 4rem; max-width: 600px; }
+    .who-title em { font-style: italic; font-weight: 600; }
+    .who-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(245,240,230,0.15); }
+    .who-card {
+      padding: 2.5rem; background: var(--teal);
+      transition: background 0.2s;
+    }
+    .who-card:hover { background: #3a7a6a; }
+    .who-emoji { font-size: 28px; margin-bottom: 1rem; display: block; }
+    .who-card h3 { font-family: var(--serif); font-size: 20px; font-weight: 600; margin-bottom: 0.75rem; }
+    .who-card p { font-size: 13px; color: rgba(245,240,230,0.7); line-height: 1.8; }
+
+    /* INSTRUCTOR */
+    .instructor { padding: 7rem 3rem; background: var(--warm); }
+    .instructor-inner {
+      display: grid; grid-template-columns: 340px 1fr; gap: 5rem; align-items: start;
+    }
+    .instructor-img {
+      border-radius: 20px; overflow: hidden;
+      aspect-ratio: 3/4; background: var(--warm-2);
+    }
+    .instructor-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .instructor-label { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--brown-3); margin-bottom: 1rem; }
+    .instructor-name { font-family: var(--serif); font-size: 52px; font-weight: 300; line-height: 1; margin-bottom: 0.5rem; }
+    .instructor-title { font-size: 14px; color: var(--teal); margin-bottom: 2rem; }
+    .instructor-bio { font-size: 15px; color: var(--brown-3); line-height: 1.9; margin-bottom: 2rem; }
+    .tag-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2.5rem; }
+    .tag {
+      font-size: 11px; color: var(--brown-2);
+      background: var(--cream); border-radius: 100px;
+      padding: 5px 14px; letter-spacing: 0.05em;
+    }
+    .quote {
+      font-family: var(--serif); font-size: 20px; font-style: italic;
+      font-weight: 400; color: var(--brown-2); line-height: 1.6;
+      border-left: 3px solid var(--teal); padding-left: 1.5rem;
+    }
+
+    /* PRICING */
+    .pricing { padding: 7rem 3rem; background: var(--cream); text-align: center; }
+    .pricing-header { max-width: 480px; margin: 0 auto 3.5rem; }
+    .pricing-header .section-title { margin-top: 0.5rem; }
+    .price-card {
+      max-width: 480px; margin: 0 auto;
+      background: var(--brown); color: var(--cream);
+      border-radius: 24px; padding: 3.5rem;
+      position: relative; overflow: hidden;
+    }
+    .price-card::before {
+      content: '♪'; font-family: var(--serif);
+      position: absolute; font-size: 300px; font-weight: 600;
+      color: rgba(245,240,230,0.04); top: -80px; right: -40px;
+      line-height: 1; pointer-events: none;
+    }
+    .price-amount { font-family: var(--serif); font-size: 72px; font-weight: 600; line-height: 1; margin: 1rem 0 0.25rem; }
+    .price-sub { font-size: 12px; color: rgba(245,240,230,0.5); margin-bottom: 2.5rem; letter-spacing: 0.05em; }
+    .price-divider { height: 1px; background: rgba(245,240,230,0.15); margin-bottom: 2rem; }
+    .price-list { list-style: none; text-align: left; margin-bottom: 2.5rem; }
+    .price-list li {
+      font-size: 14px; color: rgba(245,240,230,0.8);
+      padding: 0.65rem 0; border-bottom: 1px solid rgba(245,240,230,0.08);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .price-list li::before { content: '✓'; color: #8BC4B4; font-size: 13px; flex-shrink: 0; }
+    .btn-cream {
+      display: block; width: 100%; padding: 15px;
+      background: var(--cream); color: var(--brown);
+      font-size: 13px; font-family: var(--sans); font-weight: 500;
+      border-radius: 100px; text-decoration: none;
+      transition: all 0.2s; text-align: center;
+    }
+    .btn-cream:hover { background: var(--warm); transform: translateY(-1px); }
+
+    /* FOOTER CTA */
+    .footer-cta {
+      padding: 8rem 3rem; text-align: center;
+      background: var(--warm);
+      border-top: 1px solid var(--warm-2);
+    }
+    .footer-cta h2 { font-family: var(--serif); font-size: clamp(36px, 6vw, 72px); font-weight: 300; line-height: 1.1; margin-bottom: 1.25rem; }
+    .footer-cta h2 em { font-style: italic; font-weight: 600; color: var(--teal); }
+    .footer-cta p { font-size: 15px; color: var(--brown-3); margin-bottom: 2.5rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 3rem; border-top: 1px solid var(--warm-2);
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--cream);
+    }
+    footer p { font-size: 12px; color: var(--brown-3); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 12px; color: var(--brown-3); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--brown); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 7rem 1.5rem 3rem; }
+      .hero-right { height: 50vw; }
+      .about { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2rem; }
+      .about-sticky { position: static; }
+      .curriculum { padding: 4rem 1.5rem; }
+      .curr-grid { grid-template-columns: 1fr; }
+      .who { padding: 4rem 1.5rem; }
+      .who-grid { grid-template-columns: 1fr; }
+      .instructor { padding: 4rem 1.5rem; }
+      .instructor-inner { grid-template-columns: 1fr; }
+      .pricing { padding: 4rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">디지털 마에스트로</a>
+  <div class="nav-links">
+    <a href="#about">강의 소개</a>
+    <a href="#curriculum">커리큘럼</a>
+    <a href="#instructor">강사</a>
+    <a href="/checkout" class="nav-btn">수강 신청</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-circle c1"></div>
+    <div class="hero-circle c2"></div>
+    <span class="hero-tag">AI 클래식 마스터클래스</span>
+    <h1>
+      베토벤과 모차르트의<br>
+      <strong>작곡법으로</strong>
+      <em>나만의 클래식을</em>
+    </h1>
+    <p class="hero-desc">위대한 작곡가들이 쓴 화성과 구조를 빌려, AI로 나만의 클래식을 완성하세요. 15년 차 지휘자가 직접 가르쳐드립니다.</p>
+    <div class="hero-cta">
+      <a href="/checkout" class="btn-brown">수강 신청하기</a>
+      <a href="#curriculum" class="btn-text">커리큘럼 보기</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">15년</span><span class="stat-label">지휘 경력</span></div>
+      <div class="stat-item"><span class="stat-num">4주</span><span class="stat-label">완성 커리큘럼</span></div>
+      <div class="stat-item"><span class="stat-num">1:1</span><span class="stat-label">직접 피드백</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="instructor.png" alt="민병현 지휘자" />
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-sticky">
+    <p class="section-label">왜 이 강의인가</p>
+    <h2 class="section-title">AI 음악이<br>왜 다<br><strong>비슷할까요</strong></h2>
+  </div>
+  <div class="about-cards">
+    <div class="about-card">
+      <div class="about-icon">🎼</div>
+      <div>
+        <h3>프롬프트만으로는 부족하다</h3>
+        <p>AI 툴은 누구나 쓸 수 있습니다. 하지만 위대한 작곡가들의 언어를 알아야 진짜 클래식이 나옵니다.</p>
+      </div>
+    </div>
+    <div class="about-card">
+      <div class="about-icon">🎹</div>
+      <div>
+        <h3>화성학을 몰라도 됩니다</h3>
+        <p>베토벤의 화음, 모차르트의 선율 구조. 악보 없이 지휘자의 언어로 쉽게 풀어드립니다.</p>
+      </div>
+    </div>
+    <div class="about-card">
+      <div class="about-icon">✨</div>
+      <div>
+        <h3>아무나 만들 수 없는 클래식</h3>
+        <p>같은 AI 툴을 써도 결과물이 다릅니다. 거장들의 문법을 아는 사람의 음악은 다릅니다.</p>
+      </div>
+    </div>
+    <div class="about-card">
+      <div class="about-icon">🏆</div>
+      <div>
+        <h3>지휘자가 직접 피드백</h3>
+        <p>매주 결과물을 올리면 지휘자가 직접 피드백을 드립니다. 기수별 소수 정예로 운영됩니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="curriculum" id="curriculum">
+  <div class="curriculum-header">
+    <p class="section-label">커리큘럼</p>
+    <h2 class="section-title">4주 완성<br><strong>거장의 작곡법</strong></h2>
+  </div>
+  <div class="curr-grid">
+    <div class="curr-card" data-week="1">
+      <span class="curr-week-tag">Week 01</span>
+      <h3>클래식이란 무엇인가</h3>
+      <p>지휘자의 귀로 듣는 법. Suno 기초 사용법, 베토벤·모차르트가 300년을 살아남은 이유, 클래식의 4단계 구조.</p>
+      <span class="curr-time">45분</span>
+    </div>
+    <div class="curr-card" data-week="2">
+      <span class="curr-week-tag">Week 02</span>
+      <h3>모차르트의 선율을 빌리다</h3>
+      <p>모차르트 선율의 구조적 비밀을 프롬프트 언어로 번역하고, 지휘자 엄선 프롬프트 사전으로 서정적인 멜로디를 완성합니다.</p>
+      <span class="curr-time">45분</span>
+    </div>
+    <div class="curr-card" data-week="3">
+      <span class="curr-week-tag">Week 03</span>
+      <h3>베토벤의 감정을 빌리다</h3>
+      <p>베토벤이 청중을 압도한 화성 구조의 비밀을 해부하고, 극적인 긴장감과 해소의 흐름을 Suno로 구현합니다.</p>
+      <span class="curr-time">45분</span>
+    </div>
+    <div class="curr-card" data-week="4">
+      <span class="curr-week-tag">Week 04</span>
+      <h3>나만의 클래식 완성</h3>
+      <p>1~3강의 선율과 화성을 통합해 나만의 클래식을 완성하고, 최종 결과물에 지휘자의 1:1 피드백이 제공됩니다.</p>
+      <span class="curr-time">45분</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section class="who">
+  <h2 class="who-title">클래식을 만들고 싶은데<br><em>어디서부터 시작해야 할지</em><br>모르는 분께</h2>
+  <div class="who-grid">
+    <div class="who-card">
+      <span class="who-emoji">🎵</span>
+      <h3>클래식을 좋아하지만 만들 줄 모르는 분</h3>
+      <p>베토벤, 모차르트 음악을 즐겨 듣지만 직접 만드는 건 엄두가 나지 않았던 분.</p>
+    </div>
+    <div class="who-card">
+      <span class="who-emoji">🎁</span>
+      <h3>소중한 사람에게 하나뿐인 음악을 선물하고 싶은 분</h3>
+      <p>아이의 자장가, 부모님 헌정곡, 연인을 위한 곡. 거장의 작곡법으로 만든 음악은 다릅니다.</p>
+    </div>
+    <div class="who-card">
+      <span class="who-emoji">🎬</span>
+      <h3>클래식 BGM이 필요한 크리에이터</h3>
+      <p>유튜브, 릴스, 팟캐스트에 쓸 고퀄리티 클래식 BGM을 직접 제작하고 싶은 분.</p>
+    </div>
+    <div class="who-card">
+      <span class="who-emoji">🏆</span>
+      <h3>지휘자와 함께 성장하고 싶은 분</h3>
+      <p>기수별 소수 정예로 운영되어 매주 결과물을 올리면 지휘자가 직접 피드백을 드립니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="instructor" id="instructor">
+  <div class="instructor-inner">
+    <div class="instructor-img">
+      <img src="instructor.png" alt="민병현 지휘자" />
+    </div>
+    <div>
+      <p class="instructor-label">강사 소개</p>
+      <h2 class="instructor-name">민병현</h2>
+      <p class="instructor-title">지휘자 · 음악감독 · 클래식도슨트</p>
+      <p class="instructor-bio">파주 DMZ 필하모닉 오케스트라, 드림챔버오케스트라 상임지휘자로 활동하며 오케스트라 지휘부터 뮤지컬 음악감독, 앨범 프로듀싱까지 — 15년 넘게 클래식의 모든 현장을 누빈 지휘자입니다.</p>
+      <p class="instructor-bio">한국예술종합학교 지휘과를 졸업하고, 클래식도슨트 채널을 통해 어렵게만 느껴지던 클래식을 누구나 가까이 할 수 있는 언어로 풀어내고 있습니다.</p>
+      <div class="tag-wrap">
+        <span class="tag">한국예술종합학교</span>
+        <span class="tag">DMZ 필하모닉</span>
+        <span class="tag">드림챔버오케스트라</span>
+        <span class="tag">클래식도슨트</span>
+      </div>
+      <p class="quote">"음악에서 보이지 않는 감정을 보이게 만드는 것, 그것이 제가 하는 일입니다."</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-header">
+    <p class="section-label">수강 신청</p>
+    <h2 class="section-title">당신의 클래식을<br><strong>시작하세요</strong></h2>
+  </div>
+  <div class="price-card">
+    <p style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(245,240,230,0.5);">4주 완성 VOD 강의</p>
+    <div class="price-amount">200,000<span style="font-size:20px; font-weight:300;">원</span></div>
+    <p class="price-sub">VAT 포함 · VOD 영구 소장</p>
+    <div class="price-divider"></div>
+    <ul class="price-list">
+      <li>베토벤·모차르트 작곡법 강의 전 4강 (각 45분)</li>
+      <li>지휘자 엄선 프롬프트 사전</li>
+      <li>매주 우수작 선정 + 지휘자 총평</li>
+      <li>매주 결과물 업로드 + 지휘자 직접 피드백</li>
+      <li>기수별 인원 제한 운영</li>
+      <li>VOD 영구 소장</li>
+    </ul>
+    <a href="/checkout" class="btn-cream">수강 신청하기 →</a>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<section class="footer-cta">
+  <h2>지금 바로<br><em>시작하세요</em></h2>
+  <p>지휘자의 귀를 빌려, 세상에 단 하나뿐인 음악을 만들어보세요.</p>
+  <a href="/checkout" class="btn-brown">수강 신청하기</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 디지털 마에스트로 · 헤르츠뮤직</p>
+  <div class="footer-links">
+    <a href="/terms">이용약관</a>
+    <a href="/privacy">개인정보처리방침</a>
+    <a href="/refund">환불 정책</a>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.about-card, .curr-card, .who-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = `opacity 0.5s ${i * 0.08}s ease, transform 0.5s ${i * 0.08}s ease`;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
