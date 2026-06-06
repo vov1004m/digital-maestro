@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>디지털 마에스트로</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -16,8 +16,8 @@
       --brown-3: #8B7355;
       --teal: #2D6A5A;
       --teal-light: #E8F2EF;
-      --serif: 'Cormorant Garamond', Georgia, serif;
-      --sans: 'DM Sans', sans-serif;
+      --serif: 'Nanum Gothic', sans-serif;
+      --sans: 'Noto Sans KR', sans-serif;
     }
     html { scroll-behavior: smooth; }
     body {
@@ -53,12 +53,12 @@
     /* HERO */
     .hero {
       min-height: 100vh;
-      display: grid; grid-template-columns: 1fr 1fr;
+      display: flex;
       position: relative; overflow: hidden;
     }
     .hero-left {
       display: flex; flex-direction: column; justify-content: center;
-      padding: 8rem 4rem 6rem 3rem;
+      padding: 8rem 3rem 6rem; max-width: 700px;
       position: relative; z-index: 2;
     }
     .hero-right {
@@ -346,9 +346,6 @@
       <div class="stat-item"><span class="stat-num">4주</span><span class="stat-label">완성 커리큘럼</span></div>
       <div class="stat-item"><span class="stat-num">1:1</span><span class="stat-label">직접 피드백</span></div>
     </div>
-  </div>
-  <div class="hero-right">
-    <img src="instructor.png" alt="민병현 지휘자" />
   </div>
 </section>
 
