@@ -1,71 +1,68 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>환불 정책 — 디지털 마에스트로</title>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #fafaf8; --text: #1a1a18; --text-2: #5a5a56; --text-3: #9a9a94; --border: rgba(26,24,24,0.1); --teal: #0f6e56; --teal-light: #e1f5ee; --sans: 'Noto Sans KR', sans-serif; }
-    body { font-family: var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(250,250,248,0.92); backdrop-filter: blur(12px); border-bottom: 0.5px solid var(--border); padding: 0 2rem; height: 56px; display: flex; align-items: center; }
-    .nav-logo { font-family: 'Nanum Gothic', sans-serif; font-size: 15px; font-weight: 800; color: var(--text); text-decoration: none; }
-    .container { max-width: 720px; margin: 0 auto; padding: 4rem 2rem; }
-    h1 { font-family: 'Nanum Gothic', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 0.5rem; }
-    .updated { font-size: 13px; color: var(--text-3); margin-bottom: 3rem; }
-    h2 { font-size: 16px; font-weight: 700; margin: 2.5rem 0 0.75rem; }
-    p, li { font-size: 14px; color: var(--text-2); line-height: 1.85; }
-    ul { padding-left: 1.25rem; margin-top: 0.5rem; }
-    li { margin-bottom: 0.4rem; }
-    .highlight { background: var(--teal-light); border-left: 3px solid var(--teal); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
-    .highlight p { color: var(--teal); font-weight: 500; }
-    table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 13px; }
-    th, td { border: 0.5px solid var(--border); padding: 10px 12px; text-align: left; color: var(--text-2); }
-    th { background: #f4f3f0; font-weight: 500; color: var(--text); }
-    footer { border-top: 0.5px solid var(--border); padding: 1.5rem 2rem; text-align: center; margin-top: 4rem; }
-    footer p { font-size: 12px; color: var(--text-3); }
+    :root { --black:#080808; --gold:#C9A84C; --white:#F5F0E8; --gray:#888; --border:rgba(201,168,76,0.2); --serif:'Nanum Gothic',sans-serif; --sans:'Noto Sans KR',sans-serif; }
+    body { background:var(--black); color:var(--white); font-family:var(--sans); min-height:100vh; -webkit-font-smoothing:antialiased; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:1; opacity:0.4; }
+    nav { background:rgba(8,8,8,0.95); border-bottom:1px solid var(--border); padding:0 2.5rem; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+    .nav-logo { font-family:var(--serif); font-size:15px; font-weight:700; color:var(--gold); text-decoration:none; letter-spacing:0.1em; }
+    .nav-back { font-size:12px; color:var(--gray); text-decoration:none; transition:color 0.2s; } .nav-back:hover { color:var(--gold); }
+    .page { max-width:720px; margin:0 auto; padding:4rem 1.5rem 6rem; position:relative; z-index:2; }
+    .page-label { font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; display:flex; align-items:center; gap:8px; }
+    .page-label::before { content:''; display:block; width:16px; height:1px; background:var(--gold); }
+    h1 { font-family:var(--serif); font-size:clamp(24px,4vw,36px); font-weight:700; margin-bottom:0.5rem; }
+    .updated { font-size:12px; color:var(--gray); margin-bottom:3rem; }
+    h2 { font-family:var(--serif); font-size:18px; font-weight:700; color:var(--gold); margin:2.5rem 0 1rem; }
+    p, li { font-size:14px; color:rgba(245,240,232,0.7); line-height:1.9; margin-bottom:0.75rem; }
+    ul { padding-left:1.5rem; margin-bottom:1rem; }
+    hr { border:none; border-top:1px solid var(--border); margin:2rem 0; }
+    .highlight { border:1px solid var(--border); background:rgba(201,168,76,0.05); padding:1.25rem 1.5rem; margin-bottom:1.5rem; }
+    .highlight p { margin-bottom:0; color:rgba(245,240,232,0.85); }
   </style>
 </head>
 <body>
-  <nav><a href="/" class="nav-logo">디지털 마에스트로</a></nav>
-  <div class="container">
-    <h1>환불 정책</h1>
-    <p class="updated">시행일: 2026년 6월 5일</p>
+<nav><a href="/" class="nav-logo">디지털 마에스트로</a><a href="/" class="nav-back">← 홈</a></nav>
+<div class="page">
+  <p class="page-label">Legal</p>
+  <h1>환불 정책</h1>
+  <p class="updated">최종 업데이트: 2026년 6월</p>
 
-    <div class="highlight">
-      <p>디지털 마에스트로는 수강생의 만족을 최우선으로 생각합니다. 아래 환불 정책을 꼭 확인해 주세요.</p>
-    </div>
-
-    <h2>환불 기준</h2>
-    <table>
-      <tr><th>환불 신청 시점</th><th>환불 금액</th></tr>
-      <tr><td>결제 후 7일 이내, 1강 미수강</td><td>전액 환불</td></tr>
-      <tr><td>결제 후 7일 이내, 1강 수강 완료</td><td>결제 금액의 50% 환불</td></tr>
-      <tr><td>결제 후 7일 초과 또는 2강 이상 수강</td><td>환불 불가</td></tr>
-    </table>
-
-    <h2>환불 신청 방법</h2>
-    <ul>
-      <li>이메일: company@hertzmusic.co.kr</li>
-      <li>제목: [환불 신청] 성함 + 수강 강의명</li>
-      <li>내용: 결제일, 환불 사유, 환불 받을 계좌 정보</li>
-    </ul>
-    <p style="margin-top:0.75rem;">환불 신청 후 영업일 기준 3~5일 이내 처리됩니다.</p>
-
-    <h2>환불 불가 사항</h2>
-    <ul>
-      <li>수강 기간 7일 초과 후 환불 신청</li>
-      <li>2강 이상 수강 완료 후 환불 신청</li>
-      <li>강의 콘텐츠를 외부에 공유하거나 무단 배포한 경우</li>
-    </ul>
-
-    <h2>디지털 콘텐츠 특성 안내</h2>
-    <p>본 서비스는 디지털 콘텐츠(VOD) 특성상 콘텐츠를 확인한 이후에는 청약 철회가 제한될 수 있습니다. 이는 전자상거래 등에서의 소비자보호에 관한 법률 제17조 제2항에 근거합니다.</p>
-
-    <h2>문의</h2>
-    <p>환불 관련 문의는 company@hertzmusic.co.kr로 연락 주시기 바랍니다.</p>
+  <div class="highlight">
+    <p>디지털 콘텐츠(VOD) 특성상 수강 시작 후 환불이 제한될 수 있습니다. 구매 전 아래 환불 정책을 반드시 확인해주세요.</p>
   </div>
-  <footer><p>© 2026 디지털 마에스트로 · 헤르츠뮤직 · 대표 민병현</p></footer>
+
+  <h2>환불 가능 기간</h2>
+  <ul>
+    <li><strong style="color:var(--gold)">결제 후 7일 이내, 강의 미수강 시</strong> — 전액 환불</li>
+    <li><strong style="color:var(--gold)">결제 후 7일 이내, 1강 수강 완료 시</strong> — 수강료의 2/3 환불</li>
+    <li><strong style="color:var(--gold)">결제 후 7일 이내, 2강 이상 수강 시</strong> — 환불 불가</li>
+    <li><strong style="color:var(--gold)">결제 후 7일 초과 시</strong> — 환불 불가</li>
+  </ul>
+
+  <h2>환불 신청 방법</h2>
+  <p>환불을 원하시는 경우 아래 이메일로 문의해주세요.</p>
+  <ul>
+    <li>이메일: company@hertzmusic.co.kr</li>
+    <li>문의 시 주문번호, 성함, 환불 사유를 함께 기재해주세요.</li>
+    <li>영업일 기준 3일 이내 처리됩니다.</li>
+  </ul>
+
+  <h2>환불 불가 사유</h2>
+  <ul>
+    <li>단순 변심으로 인한 환불 요청 (7일 초과 시)</li>
+    <li>강의 콘텐츠를 이미 다운로드하거나 공유한 경우</li>
+    <li>이용약관 위반으로 서비스 이용이 제한된 경우</li>
+  </ul>
+
+  <h2>소비자 분쟁 해결</h2>
+  <p>본 환불 정책은 전자상거래 등에서의 소비자보호에 관한 법률에 따릅니다. 분쟁이 발생한 경우 공정거래위원회(국번없이 1372) 또는 한국소비자원에 도움을 요청하실 수 있습니다.</p>
+  <hr>
+  <p style="font-size:12px; color:var(--gray);">헤르츠뮤직 · 사업자등록번호: 299-70-00210 · 대표: 민병현 · 070-8095-3512</p>
+</div>
 </body>
 </html>
