@@ -68,6 +68,12 @@
       color: rgba(245,240,232,0.6); text-decoration: none; transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--gold); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--gold); border-radius: 2px; }
+    .mobile-menu { display: none; position: fixed; top: 56px; left: 0; right: 0; background: rgba(8,8,8,0.98); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,0.2); padding: 1.5rem 1.5rem; flex-direction: column; z-index: 99; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,240,232,0.6); text-decoration: none; padding: 0.9rem 0; border-bottom: 1px solid rgba(201,168,76,0.1); }
+    .mobile-menu a:last-child { border-bottom: none; color: var(--gold); font-weight: 700; }
     .nav-btn {
       font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--black) !important; background: var(--gold);
@@ -342,6 +348,9 @@
     .footer-cta p { font-size: 15px; color: var(--gray); margin-bottom: 3rem; }
 
     /* FOOTER */
+    .footer-biz { border-top: 1px solid rgba(201,168,76,0.1); padding: 1.5rem 3rem; background: #060606; display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; }
+    .footer-biz span { font-size: 11px; color: rgba(245,240,232,0.25); letter-spacing: 0.04em; }
+    .footer-biz span strong { color: rgba(245,240,232,0.4); font-weight: 500; margin-right: 4px; }
     footer {
       padding: 2rem 3rem; border-top: 1px solid rgba(201,168,76,0.1);
       display: flex; justify-content: space-between; align-items: center;
@@ -354,13 +363,17 @@
     @media (max-width: 768px) {
       nav { padding: 1.25rem 1.5rem; }
       .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
       .hero { padding: 0 1.5rem 4rem; }
       .section { padding: 5rem 1.5rem; }
       .stats { grid-template-columns: 1fr; }
       .stat { border-right: none; border-bottom: 1px solid rgba(201,168,76,0.2); }
       .why-grid { grid-template-columns: 1fr; }
       .composer-grid { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
+      .footer-biz { border-top: 1px solid rgba(201,168,76,0.1); padding: 1.5rem 3rem; background: #060606; display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; }
+    .footer-biz span { font-size: 11px; color: rgba(245,240,232,0.25); letter-spacing: 0.04em; }
+    .footer-biz span strong { color: rgba(245,240,232,0.4); font-weight: 500; margin-right: 4px; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
       .hero-cta { flex-direction: column; align-items: flex-start; gap: 1rem; }
       .btn-gold, .btn-outline { white-space: nowrap; width: 100%; text-align: center; box-sizing: border-box; }
       .hero-scroll { display: none; }
@@ -392,7 +405,15 @@
     </div>
     <a href="/checkout" class="nav-btn">수강 신청</a>
   </div>
+  <button class="nav-hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#why" onclick="closeMenu()">강의 소개</a>
+  <a href="#curriculum" onclick="closeMenu()">커리큘럼</a>
+  <a href="#instructor" onclick="closeMenu()">강사</a>
+  <a href="#pricing" onclick="closeMenu()">수강료</a>
+  <a href="/checkout" onclick="closeMenu()">수강 신청 →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -569,6 +590,14 @@
 </section>
 
 <!-- FOOTER -->
+<div class="footer-biz">
+  <span><strong>상호</strong>헤르츠뮤직</span>
+  <span><strong>대표자</strong>민병현</span>
+  <span><strong>사업자등록번호</strong>299-70-00210</span>
+  <span><strong>주소</strong>경기도 파주시 범벅들길 123</span>
+  <span><strong>전화</strong>070-8095-3512</span>
+  <span><strong>이메일</strong>company@hertzmusic.co.kr</span>
+</div>
 <footer>
   <p>© 2026 디지털 마에스트로 · 헤르츠뮤직</p>
   <div class="footer-links">
@@ -580,6 +609,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
   const { createClient } = supabase;
   const _supabase = createClient(
     'https://vdgpsejiagxnrilcnqag.supabase.co',
