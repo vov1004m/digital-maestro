@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>수강 신청 (테스트) — 디지털 마에스트로</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #080808; --gold: #C9A84C; --gold-light: #E8C97A;
+      --gold-dim: rgba(201,168,76,0.15); --white: #F5F0E8; --gray: #888;
+      --border: rgba(201,168,76,0.2);
+      --serif: 'Nanum Gothic', sans-serif; --sans: 'Noto Sans KR', sans-serif;
+    }
+    body { background: var(--black); color: var(--white); font-family: var(--sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1; opacity: 0.4; }
+
+    /* 테스트 배너 */
+    .test-banner { background: #FF6B35; color: #fff; text-align: center; padding: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; position: relative; z-index: 10; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(8,8,8,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: var(--serif); font-size: 15px; font-weight: 700; color: var(--gold); text-decoration: none; letter-spacing: 0.1em; }
+    .nav-back { font-size: 12px; color: rgba(245,240,232,0.5); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .page { max-width: 560px; margin: 0 auto; padding: 3rem 1.5rem 5rem; position: relative; z-index: 2; }
+
+    .product-box { border: 1px solid var(--border); background: rgba(201,168,76,0.05); padding: 1.5rem; margin-bottom: 2.5rem; display: flex; gap: 1.25rem; align-items: flex-start; }
+    .product-icon { width: 52px; height: 52px; background: var(--gold-dim); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .product-name { font-family: var(--serif); font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .product-desc { font-size: 12px; color: var(--gray); letter-spacing: 0.05em; }
+    .product-price { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--gold); margin-top: 8px; }
+    .product-price small { font-size: 13px; font-weight: 400; color: var(--gray); }
+
+    .section-title { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+    .section-title::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold); }
+
+    .payment-methods { display: flex; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap; }
+    .pay-method { flex: 1; min-width: 80px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); padding: 12px 6px; text-align: center; cursor: pointer; font-size: 12px; color: var(--gray); transition: all 0.15s; }
+    .pay-method i { display: block; font-size: 18px; margin-bottom: 4px; }
+    .pay-method.active-card, .pay-method.active-transfer { border: 2px solid var(--gold); color: var(--gold); background: var(--gold-dim); }
+    .pay-method.active-kakao { border: 2px solid #D4A600; background: #FEE500; color: #3A1D1D; font-weight: 700; }
+    .pay-method.active-naver { border: 2px solid #02a44a; background: #03C75A; color: #fff; font-weight: 700; }
+    .pay-method.active-toss { border: 2px solid #0064FF; background: #0064FF; color: #fff; font-weight: 700; }
+
+    .info-box { background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.25); padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 13px; color: rgba(245,240,232,0.7); line-height: 1.7; display: none; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 2rem; }
+    .form-full { grid-column: 1 / -1; }
+    .field label { display: block; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; }
+    .field input { width: 100%; padding: 11px 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--white); font-size: 14px; font-family: var(--sans); outline: none; transition: border-color 0.2s; }
+    .field input:focus { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+    .field input::placeholder { color: rgba(245,240,232,0.2); }
+
+    .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+    .order-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--gray); padding: 5px 0; }
+    .order-total { display: flex; justify-content: space-between; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--gold); padding-top: 12px; border-top: 1px solid var(--border); margin-top: 8px; }
+
+    .agree-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .agree-row input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--gold); }
+    .agree-row label { font-size: 12px; color: var(--gray); line-height: 1.6; cursor: pointer; }
+    .agree-row a { color: var(--gold); text-decoration: underline; }
+
+    .pay-btn { width: 100%; padding: 15px; font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 1.5rem; font-family: var(--sans); transition: all 0.2s; background: var(--gold); color: var(--black); }
+    .pay-btn:hover:not(:disabled) { background: var(--gold-light); }
+    .pay-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .pay-btn.btn-kakao { background: #FEE500; color: #3A1D1D; }
+    .pay-btn.btn-naver { background: #03C75A; color: #fff; }
+    .pay-btn.btn-toss  { background: #0064FF; color: #fff; }
+
+    .secure-note { text-align: center; font-size: 11px; color: rgba(245,240,232,0.25); margin-top: 1rem; letter-spacing: 0.1em; }
+
+    @media (max-width: 480px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="test-banner">🧪 테스트 모드 — 실제 결제가 이루어지지 않습니다</div>
+
+<nav>
+  <a href="/" class="nav-logo">디지털 마에스트로</a>
+  <a href="/" class="nav-back">← 홈으로</a>
+</nav>
+
+<div class="page">
+
+  <div class="product-box">
+    <div class="product-icon">🎼</div>
+    <div>
+      <p class="product-name">디지털 마에스트로</p>
+      <p class="product-desc">지휘자가 알려주는 AI 클래식 작곡법 · 4주 VOD 강의</p>
+      <p class="product-price">200,000<small>원 (VAT 포함)</small></p>
+    </div>
+  </div>
+
+  <p class="section-title">결제 수단</p>
+  <div class="payment-methods">
+    <div class="pay-method active-card" id="pm-card" onclick="selectMethod('card')">
+      <i>💳</i>신용카드
+    </div>
+    <div class="pay-method" id="pm-kakao" onclick="selectMethod('kakao')">
+      <i>💛</i>카카오페이
+    </div>
+    <div class="pay-method" id="pm-naver" onclick="selectMethod('naver')">
+      <i>💚</i>네이버페이
+    </div>
+    <div class="pay-method" id="pm-toss" onclick="selectMethod('toss')">
+      <i>💙</i>토스페이
+    </div>
+    <div class="pay-method" id="pm-transfer" onclick="selectMethod('transfer')">
+      <i>🏦</i>계좌이체
+    </div>
+  </div>
+
+  <div class="info-box" id="easy-pay-notice">
+    결제 버튼 클릭 시 <strong id="easy-pay-name">카카오페이</strong> 앱으로 연결됩니다.
+  </div>
+
+  <p class="section-title">구매자 정보</p>
+  <div class="form-grid">
+    <div class="field">
+      <label>이름</label>
+      <input type="text" id="buyer-name" placeholder="홍길동" value="테스트유저" />
+    </div>
+    <div class="field">
+      <label>연락처</label>
+      <input type="text" id="buyer-tel" placeholder="010-0000-0000" value="01012345678" />
+    </div>
+    <div class="field form-full">
+      <label>이메일 (강의 링크 발송)</label>
+      <input type="email" id="buyer-email" placeholder="example@email.com" value="test@hertzmusic.co.kr" />
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="order-row"><span>강의 금액</span><span>181,818원</span></div>
+  <div class="order-row"><span>부가세 (10%)</span><span>18,182원</span></div>
+  <div class="order-total"><span>최종 결제금액</span><span>200,000원</span></div>
+
+  <div style="margin-top: 1.5rem;">
+    <div class="agree-row">
+      <input type="checkbox" id="agree1" checked />
+      <label for="agree1"><a href="/privacy" target="_blank">개인정보 처리방침</a> 및 <a href="/terms" target="_blank">이용약관</a>에 동의합니다 (필수)</label>
+    </div>
+  </div>
+
+  <button class="pay-btn" id="pay-btn" onclick="handlePay()">
+    <span id="pay-btn-text">🧪 테스트 결제하기 (200,000원)</span>
+  </button>
+  <p class="secure-note">테스트 모드 · 실제 결제 없음 · KG이니시스 테스트 채널</p>
+
+</div>
+
+<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+<script>
+  let currentMethod = 'card';
+
+  function selectMethod(method) {
+    currentMethod = method;
+    ['card','kakao','naver','toss','transfer'].forEach(m => {
+      document.getElementById('pm-' + m).className = 'pay-method';
+    });
+    document.getElementById('pm-' + method).className = 'pay-method active-' + method;
+
+    const names = { kakao: '카카오페이', naver: '네이버페이', toss: '토스페이', transfer: '계좌이체' };
+    const btn = document.getElementById('pay-btn');
+    const notice = document.getElementById('easy-pay-notice');
+    btn.className = 'pay-btn btn-' + method;
+
+    if (method === 'card' || method === 'transfer') {
+      notice.style.display = 'none';
+      document.getElementById('pay-btn-text').textContent = '🧪 테스트 결제하기 (200,000원)';
+    } else {
+      notice.style.display = 'block';
+      document.getElementById('easy-pay-name').textContent = names[method];
+      document.getElementById('pay-btn-text').textContent = '🧪 ' + names[method] + ' 테스트 결제';
+    }
+  }
+
+  async function handlePay() {
+    const name  = document.getElementById('buyer-name').value.trim();
+    const tel   = document.getElementById('buyer-tel').value.trim();
+    const email = document.getElementById('buyer-email').value.trim();
+
+    const now = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const orderId = `TEST${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+
+    const methodMap = {
+      card:     { payMethod: 'CARD' },
+      kakao:    { payMethod: 'EASY_PAY', easyPay: { easyPayProvider: 'KAKAOPAY' } },
+      naver:    { payMethod: 'EASY_PAY', easyPay: { easyPayProvider: 'NAVERPAY' } },
+      toss:     { payMethod: 'EASY_PAY', easyPay: { easyPayProvider: 'TOSSPAY' } },
+      transfer: { payMethod: 'TRANSFER' },
+    };
+
+    const btn = document.getElementById('pay-btn');
+    btn.disabled = true;
+    document.getElementById('pay-btn-text').textContent = '결제창 연결 중...';
+
+    try {
+      const response = await PortOne.requestPayment({
+        storeId: 'store-4ba414fc-da22-4e71-8b6a-bac0e455e0fc',
+        channelKey: 'channel-key-f1c4fa68-219b-419a-a78a-14dcfe136c2d', // 테스트 채널키
+        paymentId: orderId,
+        orderName: '디지털 마에스트로 AI 작곡 강의 (테스트)',
+        totalAmount: 200000,
+        currency: 'KRW',
+        ...methodMap[currentMethod],
+        customer: {
+          fullName: name,
+          phoneNumber: tel.replace(/-/g, ''),
+          email: email,
+        },
+        redirectUrl: location.origin + '/complete',
+      });
+
+      if (response && response.code) {
+        alert('결제 실패: ' + (response.message || '알 수 없는 오류'));
+        btn.disabled = false;
+        document.getElementById('pay-btn-text').textContent = '🧪 테스트 결제하기 (200,000원)';
+      } else {
+        alert('✅ 테스트 결제 성공!\npaymentId: ' + (response?.paymentId || orderId));
+        window.location.href = '/complete?paymentId=' + (response?.paymentId || orderId);
+      }
+    } catch (e) {
+      console.error(e);
+      alert('결제 중 오류: ' + e.message);
+      btn.disabled = false;
+      document.getElementById('pay-btn-text').textContent = '🧪 테스트 결제하기 (200,000원)';
+    }
+  }
+</script>
+</body>
+</html>
