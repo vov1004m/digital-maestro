@@ -97,9 +97,9 @@
   <div class="product-box">
     <div class="product-icon">🎼</div>
     <div>
-      <p class="product-name">디지털 마에스트로</p>
-      <p class="product-desc">지휘자가 알려주는 AI 클래식 작곡법 · 4주 VOD 강의</p>
-      <p class="product-price">200,000<small>원 (VAT 포함)</small></p>
+      <p class="product-name">내 자녀의 이름을 넣은, 단 하나의 곡 만들기</p>
+      <p class="product-desc">VOD 강의 2편 · 강의 자료 · 지휘자 피드백 1회 · 수강 기간 12개월</p>
+      <p class="product-price"><span class="js-price"></span><small>원 (VAT 포함)</small></p>
     </div>
   </div>
 
@@ -109,16 +109,16 @@
     <div class="pay-method active-card" id="pm-card" onclick="selectMethod('card')">
       <i>💳</i>신용카드
     </div>
-    <div class="pay-method" id="pm-kakao" onclick="selectMethod('kakao')">
+    <div class="pay-method" id="pm-kakao" style="display:none" onclick="selectMethod('kakao')">
       <i>💛</i>카카오페이
     </div>
-    <div class="pay-method" id="pm-naver" onclick="selectMethod('naver')">
+    <div class="pay-method" id="pm-naver" style="display:none" onclick="selectMethod('naver')">
       <i>💚</i>네이버페이
     </div>
-    <div class="pay-method" id="pm-toss" onclick="selectMethod('toss')">
+    <div class="pay-method" id="pm-toss" style="display:none" onclick="selectMethod('toss')">
       <i>💙</i>토스페이
     </div>
-    <div class="pay-method" id="pm-transfer" onclick="selectMethod('transfer')">
+    <div class="pay-method" id="pm-transfer" style="display:none" onclick="selectMethod('transfer')">
       <i>🏦</i>계좌이체
     </div>
   </div>
@@ -140,17 +140,17 @@
       <input type="text" id="buyer-tel" placeholder="010-0000-0000" />
     </div>
     <div class="field form-full">
-      <label>이메일 (강의 링크 발송)</label>
-      <input type="email" id="buyer-email" placeholder="example@email.com" />
+      <label>이메일 (로그인 계정 · 수강 확인에 사용)</label>
+      <input type="email" id="buyer-email" readonly style="opacity:0.7;cursor:not-allowed" />
     </div>
   </div>
 
   <div class="divider"></div>
 
   <!-- 주문 요약 -->
-  <div class="order-row"><span>강의 금액</span><span>181,818원</span></div>
-  <div class="order-row"><span>부가세 (10%)</span><span>18,182원</span></div>
-  <div class="order-total"><span>최종 결제금액</span><span>200,000원</span></div>
+  <div class="order-row"><span>강의 금액</span><span><span class="js-supply"></span>원</span></div>
+  <div class="order-row"><span>부가세 (10%)</span><span><span class="js-vat"></span>원</span></div>
+  <div class="order-total"><span>최종 결제금액</span><span><span class="js-price"></span>원</span></div>
 
   <!-- 동의 -->
   <div style="margin-top: 1.5rem;">
@@ -166,7 +166,7 @@
 
   <!-- 결제 버튼 -->
   <button class="pay-btn" id="pay-btn" onclick="handlePay()">
-    <span id="pay-btn-text">200,000원 결제하기</span>
+    <span id="pay-btn-text">결제하기</span>
   </button>
   <p class="secure-note">🔒 SSL 보안 결제 · KG이니시스 · 개인정보 암호화 처리</p>
 
@@ -174,7 +174,36 @@
 
 <!-- 포트원 V2 SDK -->
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  /* ▼ 얼리버드 설정 — index.html의 같은 값과 반드시 맞출 것 (원, VAT 포함) */
+  const EARLY_PRICE = 49000;
+  const FULL_PRICE  = 99000;
+  const EARLY_END   = '2026-10-12';   // 이 날짜 23:59까지 얼리버드
+  const PRICE = (new Date() <= new Date(EARLY_END + 'T23:59:59+09:00')) ? EARLY_PRICE : FULL_PRICE;
+  const ORDER_NAME = '내 자녀의 이름을 넣은, 단 하나의 곡 만들기';
+
+  const won = n => n.toLocaleString('ko-KR');
+  const SUPPLY = Math.round(PRICE / 1.1), VAT = PRICE - SUPPLY;
+  document.querySelectorAll('.js-price').forEach(el => el.textContent = won(PRICE));
+  document.querySelectorAll('.js-supply').forEach(el => el.textContent = won(SUPPLY));
+  document.querySelectorAll('.js-vat').forEach(el => el.textContent = won(VAT));
+  const PAY_LABEL = won(PRICE) + '원 결제하기';
+  document.getElementById('pay-btn-text').textContent = PAY_LABEL;
+
+  // 로그인한 사람만 결제 (결제 이메일 = 로그인 이메일 → 수강 확인이 쉬워짐)
+  const _sb = supabase.createClient('https://vdgpsejlagxnrilcnqag.supabase.co', 'sb_publishable_czh60ItKuAVBkj3TAFBKXw_-Kz2QseH');
+  _sb.auth.getSession().then(({ data: { session } }) => {
+    if (!session) {
+      alert('로그인 후 신청하실 수 있습니다.');
+      window.location.href = '/login';
+      return;
+    }
+    document.getElementById('buyer-email').value = session.user.email;
+    const nm = session.user.user_metadata?.name || session.user.user_metadata?.full_name;
+    if (nm) document.getElementById('buyer-name').value = nm;
+  });
+
   let currentMethod = 'card';
 
   function selectMethod(method) {
@@ -191,7 +220,7 @@
 
     if (method === 'card' || method === 'transfer') {
       notice.style.display = 'none';
-      document.getElementById('pay-btn-text').textContent = '200,000원 결제하기';
+      document.getElementById('pay-btn-text').textContent = PAY_LABEL;
     } else {
       notice.style.display = 'block';
       document.getElementById('easy-pay-name').textContent = names[method];
@@ -215,7 +244,7 @@
     // 주문번호 생성
     const now = new Date();
     const pad = n => String(n).padStart(2,'0');
-    const orderId = `DM${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+    const orderId = `DM${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}${Math.random().toString(36).slice(2,6).toUpperCase()}`;
 
     // 결제 수단 매핑
     const methodMap = {
@@ -235,8 +264,8 @@
         storeId: 'store-077ac4b4-ba2f-4fc7-981c-724ba414fcda',
         channelKey: 'channel-key-1a61862b-8c2a-4756-b1c1-041147da0ca3',
         paymentId: orderId,
-        orderName: '디지털 마에스트로 AI 작곡 강의',
-        totalAmount: 200000,
+        orderName: ORDER_NAME,
+        totalAmount: PRICE,
         currency: 'KRW',
         ...methodMap[currentMethod],
         customer: {
@@ -250,7 +279,7 @@
       if (response && response.code) {
         alert('결제 실패: ' + (response.message || '알 수 없는 오류'));
         btn.disabled = false;
-        document.getElementById('pay-btn-text').textContent = '200,000원 결제하기';
+        document.getElementById('pay-btn-text').textContent = PAY_LABEL;
       } else {
         window.location.href = '/complete?paymentId=' + (response?.paymentId || orderId);
       }
@@ -258,7 +287,7 @@
       console.error(e);
       alert('결제 중 오류가 발생했습니다. 다시 시도해주세요.');
       btn.disabled = false;
-      document.getElementById('pay-btn-text').textContent = '200,000원 결제하기';
+      document.getElementById('pay-btn-text').textContent = PAY_LABEL;
     }
   }
 </script>
