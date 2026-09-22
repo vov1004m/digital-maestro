@@ -299,14 +299,14 @@
     async function loginWithGoogle() {
       await client.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: 'https://digital-maestro.vercel.app/dashboard' }
+        options: { redirectTo: location.origin + '/dashboard' }
       })
     }
 
     async function loginWithKakao() {
       await client.auth.signInWithOAuth({
         provider: 'kakao',
-        options: { redirectTo: 'https://digital-maestro.vercel.app/dashboard' }
+        options: { redirectTo: location.origin + '/dashboard' }
       })
     }
 
