@@ -3,150 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>내 자녀의 이름을 넣은, 단 하나의 곡 — 디지털 마에스트로</title>
-  <meta name="description" content="지휘자 민병현이 알려주는, 자녀의 이름이 들어간 클래식 곡 만들기. 모차르트, 베토벤, 쇼팽, 바흐의 언어를 빌려 세상에 한 곡뿐인 노래를 만드세요." />
-  <meta property="og:title" content="내 자녀의 이름을 넣은, 단 하나의 곡" />
-  <meta property="og:description" content="지휘자가 알려주는 자녀 이름 클래식 곡 만들기" />
+  <title>자녀의 이름을 넣어 동요를 만드세요 — 디지털 마에스트로</title>
+  <meta name="description" content="지휘자 민병현이 알려주는, 자녀의 이름이 들어간 클래식 동요 만들기. 얼리버드 기간 한정 가격." />
+  <meta property="og:title" content="자녀의 이름을 넣어 동요를 만드세요" />
+  <meta property="og:description" content="지휘자가 알려주는, 세상에 한 곡뿐인 클래식 동요" />
   <meta property="og:image" content="/instructor.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #080808;
-      --ink: #F5F0E8;
-      --gold: #C9A84C;
-      --gold-soft: #8F7A45;
-      --gray: #8A857C;
-      --line: rgba(201,168,76,0.22);
-      --serif: 'Noto Serif KR', 'Nanum Myeongjo', serif;
-      --sans: 'Noto Sans KR', system-ui, sans-serif;
-      --wrap: 720px;
+      --paper: #F6F1E7;
+      --paper-2: #EDE5D5;
+      --ink: #1E1A16;
+      --ink-soft: #5E564C;
+      --ochre: #9C7430;
+      --ochre-deep: #7A5A22;
+      --line: rgba(30,26,22,0.14);
+      --serif: 'Noto Serif KR', 'Noto Serif CJK KR', 'Nanum Myeongjo', serif;
+      --sans: 'Noto Sans KR', 'Noto Sans CJK KR', system-ui, sans-serif;
+      --wrap: 760px;
     }
     html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.75; word-break: keep-all; overflow-wrap: break-word; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.75; word-break: keep-all; overflow-wrap: break-word; -webkit-font-smoothing: antialiased; }
     a { color: inherit; }
-    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
     .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 1.5rem; }
+    .hidden { display: none !important; }
 
     /* 네비 */
-    nav { position: sticky; top: 0; z-index: 50; background: rgba(8,8,8,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    nav { position: sticky; top: 0; z-index: 40; background: rgba(246,241,231,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
     nav .wrap { max-width: 1040px; height: 58px; display: flex; align-items: center; justify-content: space-between; }
-    .logo { font-family: var(--serif); font-weight: 700; font-size: 16px; color: var(--gold); text-decoration: none; letter-spacing: 0.04em; }
-    .nav-right { display: flex; align-items: center; gap: 1.25rem; font-size: 14px; }
-    .nav-right a { text-decoration: none; color: var(--gray); }
+    .logo { font-family: var(--serif); font-weight: 700; font-size: 16px; text-decoration: none; letter-spacing: 0.03em; }
+    .nav-right { display: flex; align-items: center; gap: 1.2rem; font-size: 14px; }
+    .nav-right a { text-decoration: none; color: var(--ink-soft); }
     .nav-right a:hover { color: var(--ink); }
-    .nav-right .nav-cta { color: var(--bg); background: var(--gold); padding: 7px 14px; font-weight: 700; }
-    .nav-right .nav-cta:hover { color: var(--bg); background: #DDBD62; }
+    .nav-right .nav-cta { color: var(--paper); background: var(--ink); padding: 7px 14px; font-weight: 700; }
+    .nav-right .nav-cta:hover { color: var(--paper); background: var(--ochre-deep); }
 
     /* 첫 화면 */
-    .hero { padding: 4.5rem 0 5rem; }
-    .hero-name { font-family: var(--serif); font-weight: 900; font-size: clamp(64px, 17vw, 168px); line-height: 1.02; letter-spacing: -0.03em; }
-    .hero-name span { display: block; }
-    .wave { display: block; width: min(100%, 560px); height: 28px; margin: 1.1rem 0 2rem; }
-    .wave path { fill: none; stroke: var(--gold-soft); stroke-width: 1.6; stroke-linecap: round; }
-    .wave .glint { stroke: var(--gold); stroke-width: 2.2; stroke-dasharray: 18 140; stroke-dashoffset: 0; opacity: 0; transition: opacity 0.4s; }
-    .playing .wave .glint { opacity: 1; animation: glint 2.8s linear infinite; }
-    @keyframes glint { to { stroke-dashoffset: -316; } }
+    .hero { padding: 4.5rem 0 3.5rem; }
+    .hero h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(34px, 9.2vw, 78px); line-height: 1.18; letter-spacing: -0.035em; }
+    .hero h1 span { display: block; white-space: nowrap; }
+    .hero h1 em { font-style: normal; color: var(--ochre-deep); }
+    .hero-sub { margin-top: 1.6rem; font-size: 19px; color: var(--ink-soft); max-width: 30em; }
+    .hero-sub b { color: var(--ink); font-weight: 700; }
 
-    .play { display: inline-flex; align-items: center; gap: 0.9rem; background: none; border: 1px solid var(--gold); color: var(--ink); font: 500 16px var(--sans); padding: 0.7rem 1.3rem 0.7rem 0.8rem; cursor: pointer; }
-    .play:hover { background: rgba(201,168,76,0.08); }
-    .play-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--gold); display: grid; place-items: center; flex: none; }
-    .play-icon svg { width: 14px; height: 14px; fill: var(--bg); }
-    .play-time { color: var(--gray); font-size: 14px; font-variant-numeric: tabular-nums; }
+    /* 얼리버드 */
+    .early { margin-top: 2.6rem; background: var(--ink); color: var(--paper); display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1.2rem 1.8rem; padding: 1.5rem 1.6rem; }
+    .dday { font-family: var(--serif); font-weight: 900; font-size: 52px; line-height: 1; color: #E3C27A; font-variant-numeric: tabular-nums; }
+    .early-text { font-size: 15px; line-height: 1.6; }
+    .early-text strong { display: block; font-size: 22px; font-weight: 900; letter-spacing: -0.01em; }
+    .early-text strong span { font-variant-numeric: tabular-nums; }
+    .early-text .after { color: rgba(246,241,231,0.62); }
+    .early-left { font-size: 13px; color: rgba(246,241,231,0.62); margin-top: 0.2rem; font-variant-numeric: tabular-nums; }
+    .early .btn { background: #E3C27A; color: var(--ink); }
+    .early .btn:hover { background: #F0D493; }
 
-    .hero-lead { margin-top: 2.2rem; font-size: 19px; max-width: 32em; }
-    .hero-lead strong { font-weight: 700; }
-    .hero-sub { margin-top: 0.8rem; color: var(--gray); max-width: 34em; }
-    .hero-actions { margin-top: 2.2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
-    .btn { display: inline-block; background: var(--gold); color: var(--bg); font-weight: 700; font-size: 16px; padding: 0.95rem 1.8rem; text-decoration: none; border: none; cursor: pointer; font-family: var(--sans); }
-    .btn:hover { background: #DDBD62; }
-    .price-hint { font-size: 14px; color: var(--gray); }
-    .price-hint b { color: var(--ink); font-weight: 500; }
+    .btn { display: inline-block; background: var(--ink); color: var(--paper); font-weight: 700; font-size: 16px; padding: 0.95rem 1.7rem; text-decoration: none; border: none; cursor: pointer; font-family: var(--sans); white-space: nowrap; }
+    .btn:hover { background: var(--ochre-deep); }
 
-    /* 공통 섹션 */
+    /* 곡 */
+    .listen { margin-top: 2.2rem; display: flex; align-items: center; gap: 1.2rem; padding: 1.5rem 1.5rem 1.4rem; border: 1px solid var(--line); background: var(--paper-2); }
+    .listen-body { flex: 1; min-width: 0; }
+    .listen-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+    .listen-body h2 { font-family: var(--sans); font-size: 18px; font-weight: 700; line-height: 1.45; margin: 0; letter-spacing: 0; }
+    .listen-desc { margin-top: 0.35rem; font-size: 15px; color: var(--ink-soft); line-height: 1.65; }
+    .listen-lyric { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--line); font-family: var(--serif); font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink); }
+    .listen-lyric small { display: block; font-family: var(--sans); font-size: 12px; color: var(--ink-soft); margin-bottom: 0.15rem; }
+    .play { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--ochre); display: grid; place-items: center; cursor: pointer; flex: none; }
+    .play:hover { background: var(--ochre-deep); }
+    .play svg { width: 16px; height: 16px; fill: var(--paper); }
+    .listen-text { font-size: 15px; line-height: 1.55; }
+    .listen-text b { display: block; font-size: 16px; }
+    .listen-text span { color: var(--ink-soft); }
+    .listen-time { color: var(--ink-soft); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    /* 섹션 */
     section.block { padding: 5rem 0; border-top: 1px solid var(--line); }
-    h2 { font-family: var(--serif); font-weight: 700; font-size: clamp(26px, 5vw, 36px); line-height: 1.35; letter-spacing: -0.01em; margin-bottom: 1.4rem; }
-    .lede { color: var(--gray); max-width: 34em; }
+    h2 { font-family: var(--serif); font-weight: 700; font-size: clamp(26px, 5vw, 36px); line-height: 1.35; margin-bottom: 1.3rem; letter-spacing: -0.015em; }
+    .lede { color: var(--ink-soft); max-width: 34em; }
 
-    /* 작곡가 고르기 */
-    .traits { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 2.2rem 0 1.6rem; }
-    .trait { background: none; border: 1px solid var(--line); color: var(--gray); font: 500 15px var(--sans); padding: 0.6rem 1rem; cursor: pointer; text-align: left; }
-    .trait:hover { color: var(--ink); border-color: var(--gold-soft); }
-    .trait[aria-pressed="true"] { color: var(--bg); background: var(--gold); border-color: var(--gold); }
-    .composer-out { border-left: 2px solid var(--gold); padding: 0.4rem 0 0.4rem 1.4rem; min-height: 9.5rem; }
-    .composer-name { font-family: var(--serif); font-weight: 900; font-size: clamp(34px, 7vw, 52px); line-height: 1.15; }
-    .composer-desc { margin-top: 0.6rem; max-width: 30em; }
-    .composer-fit { margin-top: 0.5rem; color: var(--gray); font-size: 15px; }
-    .aside { margin-top: 2.6rem; padding: 1.4rem 1.5rem; background: rgba(201,168,76,0.06); max-width: 36em; }
-    .aside p + p { margin-top: 0.5rem; color: var(--gray); font-size: 15px; }
+    .traits { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 2rem 0 1.5rem; }
+    .trait { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font: 500 15px var(--sans); padding: 0.6rem 1rem; cursor: pointer; }
+    .trait:hover { color: var(--ink); border-color: var(--ink-soft); }
+    .trait[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .composer-out { border-left: 3px solid var(--ochre); padding: 0.3rem 0 0.3rem 1.4rem; min-height: 9.5rem; }
+    .composer-name { font-family: var(--serif); font-weight: 900; font-size: clamp(34px, 7vw, 50px); line-height: 1.15; }
+    .composer-desc { margin-top: 0.5rem; max-width: 30em; }
+    .composer-fit { margin-top: 0.4rem; color: var(--ink-soft); font-size: 15px; }
+    .aside { margin-top: 2.4rem; padding: 1.4rem 1.5rem; background: var(--paper-2); max-width: 36em; }
+    .aside p + p { margin-top: 0.5rem; color: var(--ink-soft); font-size: 15px; }
 
-    /* 강의 구성 */
-    .lessons { list-style: none; margin-top: 2.4rem; }
-    .lesson { display: grid; grid-template-columns: 3.4rem 1fr; gap: 0 1.2rem; padding: 1.6rem 0; border-bottom: 1px solid var(--line); }
+    .lessons { list-style: none; margin-top: 2.2rem; }
+    .lesson { display: grid; grid-template-columns: 3.2rem 1fr; gap: 0 1.1rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
     .lesson:first-child { border-top: 1px solid var(--line); }
-    .lesson-no { font-family: var(--serif); font-weight: 900; font-size: 40px; line-height: 1; color: var(--gold-soft); }
+    .lesson-no { font-family: var(--serif); font-weight: 900; font-size: 40px; line-height: 1; color: var(--ochre); }
     .lesson h3 { font-size: 19px; font-weight: 700; line-height: 1.45; }
-    .lesson h3 small { font-weight: 400; color: var(--gray); font-size: 14px; margin-left: 0.4rem; }
-    .lesson p { color: var(--gray); font-size: 15px; margin-top: 0.35rem; }
-    .extras { margin-top: 2.4rem; display: grid; gap: 1.6rem; }
+    .lesson h3 small { font-weight: 400; color: var(--ink-soft); font-size: 14px; margin-left: 0.4rem; }
+    .lesson p { color: var(--ink-soft); font-size: 15px; margin-top: 0.3rem; }
+    .extras { margin-top: 2.2rem; display: grid; gap: 1.5rem; }
     .extra h3 { font-size: 17px; font-weight: 700; }
-    .extra p { color: var(--gray); font-size: 15px; margin-top: 0.25rem; max-width: 34em; }
+    .extra p { color: var(--ink-soft); font-size: 15px; margin-top: 0.2rem; max-width: 34em; }
 
-    /* 지휘자 */
-    .conductor { display: grid; grid-template-columns: 200px 1fr; gap: 2.2rem; align-items: start; margin-top: 2rem; }
-    .conductor img { width: 100%; aspect-ratio: 4/5; object-fit: cover; filter: grayscale(0.25) contrast(1.05); display: block; }
+    .conductor { display: grid; grid-template-columns: 190px 1fr; gap: 2.2rem; align-items: start; margin-top: 2rem; }
+    .conductor img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; filter: grayscale(1) contrast(1.05); }
     .conductor-name { font-family: var(--serif); font-weight: 900; font-size: 30px; }
-    .conductor-role { color: var(--gold); font-size: 15px; margin-bottom: 1rem; }
-    .conductor p + p { margin-top: 0.8rem; }
-    .conductor .quiet { color: var(--gray); font-size: 15px; }
-    .facts { list-style: none; margin-top: 1.4rem; font-size: 15px; color: var(--gray); }
+    .conductor-role { color: var(--ochre-deep); font-size: 15px; margin-bottom: 0.9rem; }
+    .conductor p + p { margin-top: 0.7rem; }
+    .quiet { color: var(--ink-soft); font-size: 15px; }
+    .facts { list-style: none; margin-top: 1.3rem; font-size: 15px; color: var(--ink-soft); }
     .facts li { padding: 0.35rem 0; border-top: 1px solid var(--line); }
 
     /* 가격 */
-    .price-box { margin-top: 2.2rem; border: 1px solid var(--gold); padding: 2.2rem 2rem; max-width: 520px; }
-    .price-when { font-size: 15px; color: var(--gold); }
-    .price-now { font-family: var(--serif); font-weight: 900; font-size: clamp(44px, 10vw, 64px); line-height: 1.1; margin: 0.3rem 0 0.2rem; font-variant-numeric: tabular-nums; }
-    .price-now small { font-family: var(--sans); font-weight: 400; font-size: 18px; margin-left: 0.2rem; }
-    .price-after { color: var(--gray); font-size: 15px; }
-    .includes { list-style: none; margin: 1.6rem 0 1.8rem; border-top: 1px solid var(--line); }
-    .includes li { padding: 0.65rem 0; border-bottom: 1px solid var(--line); font-size: 16px; }
-    .price-box .btn { width: 100%; text-align: center; }
-    .price-note { margin-top: 0.9rem; font-size: 13px; color: var(--gray); }
+    .price { background: var(--ink); color: var(--paper); padding: 5rem 0; }
+    .price h2 { color: var(--paper); }
+    .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(246,241,231,0.18); margin-top: 2rem; }
+    .tier { background: var(--ink); padding: 1.8rem 1.6rem; }
+    .tier-label { font-size: 14px; color: rgba(246,241,231,0.62); }
+    .tier-price { font-family: var(--serif); font-weight: 900; font-size: clamp(40px, 8vw, 58px); line-height: 1.1; margin-top: 0.3rem; font-variant-numeric: tabular-nums; }
+    .tier-price small { font-family: var(--sans); font-weight: 400; font-size: 17px; margin-left: 0.15rem; }
+    .tier-note { font-size: 14px; color: rgba(246,241,231,0.62); margin-top: 0.3rem; }
+    .tier.now { background: #2A241D; box-shadow: inset 0 0 0 2px #E3C27A; }
+    .tier.now .tier-label { color: #E3C27A; font-weight: 700; }
+    .tier.later .tier-price { color: rgba(246,241,231,0.45); }
+    .includes { list-style: none; margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; border-top: 1px solid rgba(246,241,231,0.18); }
+    .includes li { padding: 0.75rem 0; border-bottom: 1px solid rgba(246,241,231,0.18); }
+    .price-cta { margin-top: 2.2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+    .price-cta .btn { background: #E3C27A; color: var(--ink); font-size: 17px; padding: 1.05rem 2.2rem; }
+    .price-cta .btn:hover { background: #F0D493; }
+    .price-cta p { font-size: 14px; color: rgba(246,241,231,0.62); }
 
-    /* 질문 */
     .faq { margin-top: 2rem; border-top: 1px solid var(--line); }
     .faq details { border-bottom: 1px solid var(--line); }
     .faq summary { cursor: pointer; list-style: none; padding: 1.15rem 2rem 1.15rem 0; font-weight: 500; position: relative; }
     .faq summary::-webkit-details-marker { display: none; }
-    .faq summary::after { content: '+'; position: absolute; right: 0.2rem; top: 1.05rem; color: var(--gold); font-size: 20px; font-weight: 400; }
+    .faq summary::after { content: '+'; position: absolute; right: 0.2rem; top: 1.05rem; color: var(--ochre); font-size: 20px; }
     .faq details[open] summary::after { content: '−'; }
-    .faq details p { color: var(--gray); font-size: 15px; padding: 0 0 1.3rem; max-width: 36em; }
+    .faq details p { color: var(--ink-soft); font-size: 15px; padding: 0 0 1.3rem; max-width: 36em; }
 
-    /* 마무리 */
-    .closing { padding: 5.5rem 0 6rem; border-top: 1px solid var(--line); }
-    .closing h2 { font-size: clamp(30px, 6vw, 44px); margin-bottom: 1.8rem; }
-
-    footer { border-top: 1px solid var(--line); padding: 2.5rem 0 3rem; font-size: 13px; color: var(--gray); }
+    footer { border-top: 1px solid var(--line); padding: 2.5rem 0 3rem; font-size: 13px; color: var(--ink-soft); }
     footer .biz { display: flex; flex-wrap: wrap; gap: 0.3rem 1.2rem; line-height: 1.8; }
-    footer .links { margin-top: 1.2rem; display: flex; gap: 1.2rem; }
+    footer .links { margin-top: 1.1rem; display: flex; gap: 1.2rem; }
     footer .links a { text-decoration: none; }
-    footer .links a:hover { color: var(--ink); }
+
+    /* 휴대폰 하단 신청 막대 */
+    .sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: var(--ink); color: var(--paper); display: none; align-items: center; gap: 0.8rem; padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom)); }
+    .sticky-text { font-size: 13px; line-height: 1.35; flex: 1; }
+    .sticky-text b { display: block; font-size: 16px; font-variant-numeric: tabular-nums; }
+    .sticky-text b span { color: #E3C27A; margin-right: 0.35rem; }
+    .sticky .btn { background: #E3C27A; color: var(--ink); padding: 0.75rem 1.2rem; font-size: 15px; }
 
     @media (max-width: 640px) {
-      body { font-size: 16px; }
-      .hero { padding: 3rem 0 4rem; }
-      .hero-lead { font-size: 17px; }
+      body { font-size: 16px; padding-bottom: 76px; }
+      .hero { padding: 3rem 0 3rem; }
+      .hero-sub { font-size: 17px; }
+      .early { grid-template-columns: auto 1fr; padding: 1.3rem 1.2rem; }
+      .early .btn { grid-column: 1 / -1; text-align: center; }
+      .dday { font-size: 44px; }
+      .early-text strong { font-size: 19px; }
+      .price-grid, .includes { grid-template-columns: 1fr; }
       .conductor { grid-template-columns: 1fr; }
-      .conductor img { max-width: 220px; }
+      .conductor img { max-width: 200px; }
       .nav-right .hide-sm { display: none; }
-      .price-box { padding: 1.8rem 1.4rem; }
+      .sticky:not(.off) { display: flex; }
     }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .playing .wave .glint { animation: none; opacity: 1; stroke-dasharray: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
 <body>
@@ -164,51 +187,50 @@
 </nav>
 
 <main>
-  <!-- 첫 화면 -->
-  <header class="hero" id="hero">
+  <header class="hero">
     <div class="wrap">
-      <h1 class="hero-name" aria-label="윤슬아, 윤슬아"><span>윤슬아,</span><span>윤슬아</span></h1>
-      <svg class="wave" viewBox="0 0 560 28" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 14 C 35 2, 70 2, 105 14 S 175 26, 210 14 S 280 2, 315 14 S 385 26, 420 14 S 490 2, 525 14 S 560 20, 560 20" />
-        <path class="glint" d="M0 14 C 35 2, 70 2, 105 14 S 175 26, 210 14 S 280 2, 315 14 S 385 26, 420 14 S 490 2, 525 14 S 560 20, 560 20" />
-      </svg>
+      <h1><span>자녀의 <em>이름</em>을 넣어</span><span>동요를 만드세요</span></h1>
+      <p class="hero-sub">지휘자가 알려드립니다. 모차르트, 베토벤, 쇼팽, 바흐의 언어를 빌려 <b>세상에 한 곡뿐인 클래식 동요</b>를요. 악보를 몰라도 됩니다.</p>
 
-      <button class="play" id="play" type="button" aria-label="곡 듣기">
-        <span class="play-icon" id="play-icon"><svg viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z"/></svg></span>
-        <span id="play-label">곡 듣기</span>
-        <span class="play-time" id="play-time"></span>
-      </button>
-      <audio id="song" preload="metadata" src="/song-yunseul.mp3"></audio>
-
-      <p class="hero-lead">네 살 조카의 이름을 넣어 만든 곡입니다.<br><strong>여러분도 자녀의 이름으로 한 곡을 만들 수 있습니다.</strong></p>
-      <p class="hero-sub">모차르트, 베토벤, 쇼팽, 바흐의 언어를 빌려서요. 악보를 읽지 못해도 됩니다. 곡은 AI가 만들고, 어떤 곡이 좋은지 고르는 귀를 지휘자가 알려드립니다.</p>
-
-      <div class="hero-actions">
-        <a href="/checkout" class="btn">강의 신청하기</a>
-        <span class="price-hint js-hint"></span>
+      <div class="early js-early">
+        <div class="dday js-dday">D-20</div>
+        <div class="early-text">
+          <strong>얼리버드 <span class="js-early-price">49,000</span>원</strong>
+          <span class="js-until">10월 12일까지</span><br><span class="after">이후 정가 <span class="js-full-price">99,000</span>원</span>
+          <p class="early-left js-left"></p>
+        </div>
+        <a href="/checkout" class="btn">지금 신청하기</a>
       </div>
+
+      <div class="listen" id="listen">
+        <button class="play" id="play" type="button" aria-label="곡 듣기"><svg viewBox="0 0 14 14" id="play-svg"><path d="M3 1.5v11l9-5.5z"/></svg></button>
+        <div class="listen-body">
+          <div class="listen-head">
+            <h2>지휘자가 AI로 조카에게 만들어준 곡</h2>
+            <span class="listen-time" id="play-time"></span>
+          </div>
+          <p class="listen-desc">네 살 조카 윤슬이의 이름을 넣어, 모차르트의 언어를 빌려 만들었습니다.<br>이 강의에서 알려드리는 방법 그대로 만든 곡입니다.</p>
+        </div>
+      </div>
+      <audio id="song" preload="metadata" src="/song-yunseul.mp3"></audio>
     </div>
   </header>
 
-  <!-- 작곡가 -->
   <section class="block" id="composer">
     <div class="wrap">
       <h2>자녀에게 어울리는<br>작곡가가 있습니다</h2>
       <p class="lede">우리 아이는 어떤 아이인가요? 하나를 골라보세요.</p>
-
       <div class="traits" role="group" aria-label="자녀의 성격">
         <button class="trait" type="button" data-k="mozart" aria-pressed="true">밝고, 잘 웃고, 나서기를 좋아해요</button>
         <button class="trait" type="button" data-k="chopin" aria-pressed="false">조용하고, 속이 깊어요</button>
         <button class="trait" type="button" data-k="beethoven" aria-pressed="false">씩씩하고, 자기 뜻이 분명해요</button>
         <button class="trait" type="button" data-k="bach" aria-pressed="false">차분하고, 규칙적이에요</button>
       </div>
-
       <div class="composer-out" aria-live="polite">
         <p class="composer-name" id="c-name"></p>
         <p class="composer-desc" id="c-desc"></p>
         <p class="composer-fit" id="c-fit"></p>
       </div>
-
       <div class="aside">
         <p>성격만큼 중요한 게 하나 더 있습니다. 자녀가 <strong>따라 부를 곡</strong>인가요, <strong>틀어놓고 들려줄 곡</strong>인가요?</p>
         <p>쇼팽은 아름답지만 세 살이 따라 부를 수 있는 모양이 아닙니다. 강의에서 이 둘을 가르는 기준을 알려드립니다.</p>
@@ -216,12 +238,10 @@
     </div>
   </section>
 
-  <!-- 강의 구성 -->
   <section class="block" id="lessons">
     <div class="wrap">
       <h2>강의에서 하는 것</h2>
-      <p class="lede">두 편을 보고 나면 자녀의 곡이 한 곡 완성되어 있습니다.</p>
-
+      <p class="lede">두 편을 보고 나면 자녀의 동요가 한 곡 완성되어 있습니다.</p>
       <ol class="lessons">
         <li class="lesson">
           <span class="lesson-no" aria-hidden="true">1</span>
@@ -234,15 +254,14 @@
           <span class="lesson-no" aria-hidden="true">2</span>
           <div>
             <h3>곡을 만들고, 고릅니다<small>10분</small></h3>
-            <p>수노 v6로 같은 가사를 열 곡 뽑는 법. 그중 좋은 곡을 고르는 네 가지 기준. 마음에 안 드는 부분만 골라 고치는 법.</p>
+            <p>수노 v6로 같은 가사를 열 곡 뽑는 법. 좋은 곡을 고르는 네 가지 기준. 마음에 안 드는 부분만 골라 고치는 법.</p>
           </div>
         </li>
       </ol>
-
       <div class="extras">
         <div class="extra">
           <h3>강의 자료</h3>
-          <p>네 작곡가의 프롬프트를 복사해서 그대로 붙이시면 됩니다. 가사 양식과, 곡이 마음에 안 들 때 쓰는 증상별 처방도 들어 있습니다. 도구가 업데이트되면 자료도 갱신됩니다.</p>
+          <p>네 작곡가의 프롬프트를 복사해서 그대로 붙이시면 됩니다. 가사를 부탁하는 문장과 고르는 기준도 들어 있습니다. 도구가 업데이트되면 자료도 갱신됩니다.</p>
         </div>
         <div class="extra">
           <h3>지휘자 피드백 1회</h3>
@@ -252,7 +271,6 @@
     </div>
   </section>
 
-  <!-- 지휘자 -->
   <section class="block" id="conductor">
     <div class="wrap">
       <h2>곡은 AI가 만들지만,<br>고르는 건 사람입니다</h2>
@@ -274,63 +292,46 @@
     </div>
   </section>
 
-  <!-- 가격 -->
-  <section class="block" id="price">
+  <section class="price" id="price">
     <div class="wrap">
-      <h2>가격</h2>
-      <div class="price-box">
-        <p class="price-when js-when"></p>
-        <p class="price-now"><span class="js-price"></span><small>원</small></p>
-        <p class="price-after js-after"></p>
-        <ul class="includes">
-          <li>강의 영상 2편</li>
-          <li>강의 자료 (프롬프트, 가사 양식, 처방)</li>
-          <li>지휘자 피드백 1회</li>
-          <li>12개월 동안 다시 보기</li>
-        </ul>
-        <a href="/checkout" class="btn">강의 신청하기</a>
-        <p class="price-note">부가세 포함. 결제 확인 후 대시보드에서 바로 볼 수 있습니다. 보통 당일 안에 열립니다.</p>
+      <h2 class="js-price-title">얼리버드는 <span class="js-until">10월 12일</span>까지입니다</h2>
+      <div class="price-grid js-tiers">
+        <div class="tier now">
+          <p class="tier-label">얼리버드 · <span class="js-until">10월 12일까지</span></p>
+          <p class="tier-price"><span class="js-early-price">49,000</span><small>원</small></p>
+          <p class="tier-note js-left"></p>
+        </div>
+        <div class="tier later">
+          <p class="tier-label">이후 정가</p>
+          <p class="tier-price"><span class="js-full-price">99,000</span><small>원</small></p>
+          <p class="tier-note">구성은 똑같습니다</p>
+        </div>
+      </div>
+      <ul class="includes">
+        <li>강의 영상 2편</li>
+        <li>강의 자료</li>
+        <li>지휘자 피드백 1회</li>
+        <li>12개월 동안 다시 보기</li>
+      </ul>
+      <div class="price-cta">
+        <a href="/checkout" class="btn">얼리버드로 신청하기</a>
+        <p>부가세 포함 · 결제 확인 후 대시보드에서 열립니다</p>
       </div>
     </div>
   </section>
 
-  <!-- 질문 -->
   <section class="block" id="faq">
     <div class="wrap">
       <h2>자주 묻는 질문</h2>
       <div class="faq">
-        <details>
-          <summary>음악을 전혀 몰라도 되나요?</summary>
-          <p>네. 악보를 읽거나 악기를 다룰 필요가 없습니다. 곡은 AI 작곡 도구가 만들고, 필요한 문장은 모두 복사해서 붙이시면 됩니다. 여러분이 하실 일은 가사를 쓰고, 나온 곡 중에 고르는 것입니다.</p>
-        </details>
-        <details>
-          <summary>어떤 도구를 쓰나요? 따로 돈이 드나요?</summary>
-          <p>AI 작곡 도구 수노(Suno)를 씁니다. 무료로도 하루에 여러 곡을 만들 수 있지만, 곡을 고르고 고치는 과정까지 제대로 하시려면 유료 플랜을 권합니다. 수노 요금은 강의료와 별도입니다.</p>
-        </details>
-        <details>
-          <summary>자녀가 아직 아기인데 괜찮을까요?</summary>
-          <p>괜찮습니다. 아직 따라 부를 나이가 아니라면 틀어놓고 들려주는 곡으로 만드시면 됩니다. 백일, 돌, 천 일 같은 날짜를 가사에 넣는 법도 알려드립니다.</p>
-        </details>
-        <details>
-          <summary>피드백은 어떻게 받나요?</summary>
-          <p>강의 자료에 적힌 주소로 뽑은 곡 세 곡을 보내주시면 됩니다. 제가 직접 듣고, 어떤 곡이 좋은지와 그 이유를 답장으로 드립니다.</p>
-        </details>
-        <details>
-          <summary>결제하면 언제부터 볼 수 있나요?</summary>
-          <p>결제 확인 후 로그인한 계정의 대시보드에 강의가 열립니다. 보통 당일 안에 처리됩니다. 결제할 때 쓴 계정으로 로그인해주세요.</p>
-        </details>
-        <details>
-          <summary>환불할 수 있나요?</summary>
-          <p>환불 기준은 <a href="/refund">환불 정책</a>에 안내되어 있습니다.</p>
-        </details>
+        <details><summary>음악을 전혀 몰라도 되나요?</summary><p>네. 악보를 읽거나 악기를 다룰 필요가 없습니다. 곡은 AI 작곡 도구가 만들고, 필요한 문장은 모두 복사해서 붙이시면 됩니다. 여러분이 하실 일은 가사를 쓰고, 나온 곡 중에 고르는 것입니다.</p></details>
+        <details><summary>어떤 도구를 쓰나요? 따로 돈이 드나요?</summary><p>AI 작곡 도구 수노(Suno)를 씁니다. 무료로도 하루에 여러 곡을 만들 수 있지만, 곡을 고르고 고치는 과정까지 제대로 하시려면 유료 플랜을 권합니다. 수노 요금은 강의료와 별도입니다.</p></details>
+        <details><summary>얼리버드가 끝나면 무엇이 달라지나요?</summary><p>가격만 달라집니다. 강의, 자료, 피드백 구성은 똑같습니다. 얼리버드 기간에 신청하시면 99,000원 구성을 49,000원에 받으시는 겁니다.</p></details>
+        <details><summary>자녀가 아직 아기인데 괜찮을까요?</summary><p>괜찮습니다. 아직 따라 부를 나이가 아니라면 틀어놓고 들려주는 곡으로 만드시면 됩니다. 백일, 돌, 천 일 같은 날짜를 가사에 넣는 법도 알려드립니다.</p></details>
+        <details><summary>피드백은 어떻게 받나요?</summary><p>강의 자료에 적힌 주소로 뽑은 곡 세 곡을 보내주시면 됩니다. 제가 직접 듣고, 어떤 곡이 좋은지와 그 이유를 답장으로 드립니다.</p></details>
+        <details><summary>결제하면 언제부터 볼 수 있나요?</summary><p>결제 확인 후 로그인한 계정의 대시보드에 강의가 열립니다. 보통 당일 안에 처리됩니다.</p></details>
+        <details><summary>환불할 수 있나요?</summary><p>환불 기준은 <a href="/refund">환불 정책</a>에 안내되어 있습니다.</p></details>
       </div>
-    </div>
-  </section>
-
-  <section class="closing">
-    <div class="wrap">
-      <h2>자녀의 이름으로 된 곡은<br>세상에 한 곡뿐입니다</h2>
-      <a href="/checkout" class="btn">강의 신청하기</a>
     </div>
   </section>
 </main>
@@ -338,20 +339,17 @@
 <footer>
   <div class="wrap">
     <div class="biz">
-      <span>상호 헤르츠뮤직</span>
-      <span>대표자 민병현</span>
-      <span>사업자등록번호 299-70-00210</span>
-      <span>주소 경기도 파주시 범벅들길 123</span>
-      <span>전화 070-8095-3512</span>
-      <span>이메일 company@hertzmusic.co.kr</span>
+      <span>상호 헤르츠뮤직</span><span>대표자 민병현</span><span>사업자등록번호 299-70-00210</span>
+      <span>주소 경기도 파주시 범벅들길 123</span><span>전화 070-8095-3512</span><span>이메일 company@hertzmusic.co.kr</span>
     </div>
-    <div class="links">
-      <a href="/terms">이용약관</a>
-      <a href="/privacy">개인정보처리방침</a>
-      <a href="/refund">환불 정책</a>
-    </div>
+    <div class="links"><a href="/terms">이용약관</a><a href="/privacy">개인정보처리방침</a><a href="/refund">환불 정책</a></div>
   </div>
 </footer>
+
+<div class="sticky js-sticky">
+  <div class="sticky-text"><b><span class="js-dday">D-20</span>얼리버드 <span class="js-early-price" style="color:inherit;margin:0">49,000</span>원</b><span class="js-until">10월 12일까지</span></div>
+  <a href="/checkout" class="btn">신청하기</a>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -363,27 +361,36 @@
   const EARLY_END   = '2026-10-12';   // 이 날짜 23:59까지 얼리버드
   /* ============================================================ */
 
-  // 가격 표시 (마감일이 지나면 자동으로 정가로 바뀜)
-  (function () {
-    const won = n => n.toLocaleString('ko-KR');
-    const end = new Date(EARLY_END + 'T23:59:59+09:00');
-    const early = new Date() <= end;
-    const m = end.getMonth() + 1, d = end.getDate();
-    const set = (sel, html) => document.querySelectorAll(sel).forEach(el => el.innerHTML = html);
-    if (early) {
-      set('.js-when',  `${m}월 ${d}일까지 얼리버드`);
-      set('.js-price', won(EARLY_PRICE));
-      set('.js-after', `마감 후 ${won(FULL_PRICE)}원`);
-      set('.js-hint',  `<b>${m}월 ${d}일까지 ${won(EARLY_PRICE)}원</b>, 이후 ${won(FULL_PRICE)}원`);
-    } else {
-      set('.js-when',  '');
-      set('.js-price', won(FULL_PRICE));
-      set('.js-after', '');
-      set('.js-hint',  `<b>${won(FULL_PRICE)}원</b>`);
-    }
-  })();
+  const won = n => n.toLocaleString('ko-KR');
+  const $$ = sel => document.querySelectorAll(sel);
+  const end = new Date(EARLY_END + 'T23:59:59+09:00');
+  const m = end.getMonth() + 1, d = end.getDate();
 
-  // 작곡가 고르기
+  function renderPrice() {
+    const now = new Date();
+    const left = end - now;
+    $$('.js-early-price').forEach(el => el.textContent = won(EARLY_PRICE));
+    $$('.js-full-price').forEach(el => el.textContent = won(FULL_PRICE));
+    if (left > 0) {
+      const days = Math.floor(left / 86400000);
+      const hours = Math.floor(left % 86400000 / 3600000);
+      $$('.js-dday').forEach(el => el.textContent = days === 0 ? 'D-DAY' : `D-${days}`);
+      $$('.js-until').forEach(el => el.textContent = el.closest('h2') ? `${m}월 ${d}일` : `${m}월 ${d}일까지`);
+      $$('.js-left').forEach(el => el.textContent = days === 0 ? `오늘 자정 마감 · ${hours}시간 남음` : `마감까지 ${days}일 ${hours}시간`);
+    } else {
+      // 얼리버드 종료: 강조 요소를 걷고 정가만 표시
+      $$('.js-early, .js-sticky').forEach(el => el.classList.add('hidden'));
+      document.querySelector('.js-price-title').textContent = '가격';
+      document.querySelector('.js-tiers').innerHTML =
+        `<div class="tier now"><p class="tier-label">정가</p><p class="tier-price">${won(FULL_PRICE)}<small>원</small></p></div>`;
+      document.querySelector('.price-cta .btn').textContent = '강의 신청하기';
+      const q = [...document.querySelectorAll('.faq summary')].find(s => s.textContent.includes('얼리버드'));
+      if (q) q.parentElement.remove();
+    }
+  }
+  renderPrice();
+  setInterval(renderPrice, 60000);
+
   const COMPOSERS = {
     mozart:    { name: '모차르트', desc: '모차르트의 음악은 놀이입니다. 가볍게 튀어 오르고, 밝고, 장난스럽습니다.', fit: '따라 부르는 곡으로 가장 잘 맞습니다. 윤슬이 곡이 모차르트입니다.' },
     chopin:    { name: '쇼팽',     desc: '쇼팽은 그리움의 음악입니다. 선율이 길고 부드럽게 굽이칩니다.', fit: '따라 부르기보다 들려주는 곡, 잠들기 전 틀어주는 곡에 잘 맞습니다.' },
@@ -394,34 +401,29 @@
     const c = COMPOSERS[k];
     document.getElementById('c-name').textContent = c.name;
     document.getElementById('c-desc').textContent = c.desc;
-    document.getElementById('c-fit').textContent  = c.fit;
-    document.querySelectorAll('.trait').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === k));
+    document.getElementById('c-fit').textContent = c.fit;
+    $$('.trait').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === k));
   }
-  document.querySelectorAll('.trait').forEach(b => b.addEventListener('click', () => pick(b.dataset.k)));
+  $$('.trait').forEach(b => b.addEventListener('click', () => pick(b.dataset.k)));
   pick('mozart');
 
-  // 곡 재생
   const song = document.getElementById('song');
-  const btn = document.getElementById('play');
-  const hero = document.getElementById('hero');
-  const PLAY = '<svg viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z"/></svg>';
-  const PAUSE = '<svg viewBox="0 0 14 14"><path d="M3 1.5h3v11H3zM8 1.5h3v11H8z"/></svg>';
+  const PLAY = '<path d="M3 1.5v11l9-5.5z"/>', PAUSE = '<path d="M3 1.5h3v11H3zM8 1.5h3v11H8z"/>';
   const fmt = s => isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}` : '';
   song.addEventListener('loadedmetadata', () => document.getElementById('play-time').textContent = fmt(song.duration));
   song.addEventListener('timeupdate', () => { if (!song.paused) document.getElementById('play-time').textContent = fmt(song.currentTime) + ' / ' + fmt(song.duration); });
-  song.addEventListener('error', () => { btn.hidden = true; });
-  const state = on => {
-    hero.classList.toggle('playing', on);
-    document.getElementById('play-icon').innerHTML = on ? PAUSE : PLAY;
-    document.getElementById('play-label').textContent = on ? '일시정지' : '곡 듣기';
-    btn.setAttribute('aria-label', on ? '일시정지' : '곡 듣기');
-  };
+  song.addEventListener('error', () => document.getElementById('listen').classList.add('hidden'));
+  const state = on => { document.getElementById('play-svg').innerHTML = on ? PAUSE : PLAY; document.getElementById('play').setAttribute('aria-label', on ? '일시정지' : '곡 듣기'); };
   song.addEventListener('play', () => state(true));
   song.addEventListener('pause', () => state(false));
   song.addEventListener('ended', () => state(false));
-  btn.addEventListener('click', () => song.paused ? song.play() : song.pause());
+  document.getElementById('play').addEventListener('click', () => song.paused ? song.play() : song.pause());
 
-  // 로그인 상태면 "내 강의" 표시
+  // 가격 영역이 보이면 하단 막대 숨김 (같은 내용이 두 번 보이지 않게)
+  const sticky = document.querySelector('.js-sticky');
+  new IntersectionObserver(es => es.forEach(e => sticky.classList.toggle('off', e.isIntersecting)), { threshold: 0.15 })
+    .observe(document.getElementById('price'));
+
   const _sb = supabase.createClient('https://vdgpsejlagxnrilcnqag.supabase.co', 'sb_publishable_czh60ItKuAVBkj3TAFBKXw_-Kz2QseH');
   _sb.auth.getSession().then(({ data: { session } }) => {
     if (!session) return;
