@@ -28,6 +28,29 @@
     .link-row a { color:var(--gold); text-decoration:none; }
     .error { font-size:12px; color:#e74c3c; margin-bottom:1rem; display:none; }
     .success { font-size:13px; color:#2ecc71; margin-bottom:1rem; display:none; text-align:center; padding:1rem; border:1px solid rgba(46,204,113,0.3); background:rgba(46,204,113,0.05); }
+
+    /* 소셜 가입 */
+    .social-buttons { display:flex; flex-direction:column; gap:10px; margin-bottom:1.4rem; }
+    .btn-social { width:100%; padding:13px; font-size:14px; font-weight:500; font-family:var(--sans);
+      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; border:1px solid var(--border); }
+    .btn-google { background:#FFFDF8; color:var(--ink); }
+    .btn-google:hover { background:#F0E9DA; }
+    .btn-kakao { background:#FEE500; color:#1a1a18; border-color:#FEE500; }
+    .btn-kakao:hover { opacity:0.88; }
+    .social-icon { width:18px; height:18px; }
+    .divider { display:flex; align-items:center; gap:0.75rem; margin-bottom:1.4rem; color:var(--gray); font-size:12px; }
+    .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+    /* 비밀번호 보기 */
+    .pw-wrap { position:relative; }
+    .pw-wrap input { padding-right:64px; }
+    .pw-toggle { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none;
+      color:var(--gray); font-size:13px; font-family:var(--sans); cursor:pointer; padding:4px 6px; }
+    .pw-toggle:hover { color:var(--ink); }
+    .hint { font-size:12px; color:var(--gray); margin:-0.6rem 0 1rem; }
+    .match { font-size:12px; margin:-0.6rem 0 1rem; display:none; }
+    .match.ok { display:block; color:#4C7A3F; }
+    .match.no { display:block; color:#A8452F; }
+    input.bad { border-color:#A8452F; }
   </style>
 </head>
 <body>
@@ -39,12 +62,39 @@
     <p class="box-sub">계정을 만들고 강의를 시작해보세요.</p>
     <p class="error" id="error-msg">오류가 발생했습니다. 다시 시도해주세요.</p>
     <p class="success" id="success-msg">✓ 가입 완료! 이메일을 확인해주세요.</p>
+    <div class="social-buttons">
+      <button class="btn-social btn-google" onclick="joinWithGoogle()">
+        <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        구글로 가입하기
+      </button>
+      <button class="btn-social btn-kakao" onclick="joinWithKakao()">
+        <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3C6.48 3 2 6.48 2 10.8c0 2.7 1.68 5.07 4.2 6.48l-1.08 3.96 4.56-3c.72.12 1.44.18 2.16.18 5.52 0 10-3.48 10-7.8S17.52 3 12 3z" fill="#1a1a18"/>
+        </svg>
+        카카오로 가입하기
+      </button>
+    </div>
+    <div class="divider">또는 이메일로 가입</div>
     <label>이름</label>
     <input type="text" id="name" placeholder="홍길동" />
     <label>이메일</label>
     <input type="email" id="email" placeholder="example@email.com" />
     <label>비밀번호</label>
-    <input type="password" id="pw" placeholder="8자 이상" />
+    <div class="pw-wrap">
+      <input type="password" id="pw" placeholder="8자 이상" />
+      <button type="button" class="pw-toggle" id="pw-toggle" onclick="togglePw()">보기</button>
+    </div>
+    <p class="hint">영문과 숫자를 섞어 8자 이상으로 만들어주세요.</p>
+    <label>비밀번호 확인</label>
+    <div class="pw-wrap">
+      <input type="password" id="pw2" placeholder="한 번 더 입력해주세요" oninput="checkMatch()" />
+    </div>
+    <p class="match" id="match-msg"></p>
     <button class="btn" onclick="doRegister()">회원가입</button>
     <p class="link-row">이미 계정이 있으신가요? <a href="/login">로그인</a></p>
   </div>
@@ -53,6 +103,28 @@
 <script>
   const { createClient } = supabase;
   const _supabase = createClient('https://vdgpsejlagxnrilcnqag.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkZ3BzZWpsYWd4bnJpbGNucWFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDE2MTIsImV4cCI6MjA5NTkxNzYxMn0.YU_fHHh_UZ0MQLLlRPXr-ZNz5vq2Xb9TbK5iH7Q9BHg');
+  async function joinWithGoogle() {
+    await _supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + '/dashboard' } });
+  }
+  async function joinWithKakao() {
+    await _supabase.auth.signInWithOAuth({ provider: 'kakao', options: { redirectTo: location.origin + '/dashboard' } });
+  }
+  function togglePw() {
+    const i = document.getElementById('pw'), j = document.getElementById('pw2'), b = document.getElementById('pw-toggle');
+    const show = i.type === 'password';
+    i.type = j.type = show ? 'text' : 'password';
+    b.textContent = show ? '숨기기' : '보기';
+  }
+  function checkMatch() {
+    const a = document.getElementById('pw').value, b = document.getElementById('pw2').value;
+    const m = document.getElementById('match-msg'), f = document.getElementById('pw2');
+    if (!b) { m.className = 'match'; f.classList.remove('bad'); return; }
+    if (a === b) { m.textContent = '비밀번호가 일치합니다'; m.className = 'match ok'; f.classList.remove('bad'); }
+    else { m.textContent = '비밀번호가 일치하지 않습니다'; m.className = 'match no'; f.classList.add('bad'); }
+  }
+  document.getElementById('pw').addEventListener('input', checkMatch);
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+
   async function doRegister() {
     const err = document.getElementById('error-msg');
     const suc = document.getElementById('success-msg');
@@ -60,7 +132,10 @@
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const pw = document.getElementById('pw').value;
+    const pw2 = document.getElementById('pw2').value;
     if (!name || !email || !pw) { err.textContent = '모든 항목을 입력해주세요.'; err.style.display = 'block'; return; }
+    if (pw.length < 8) { err.textContent = '비밀번호는 8자 이상으로 입력해주세요.'; err.style.display = 'block'; return; }
+    if (pw !== pw2) { err.textContent = '비밀번호가 일치하지 않습니다.'; err.style.display = 'block'; return; }
     const { error } = await _supabase.auth.signUp({ email, password: pw, options: { data: { name } } });
     if (error) { err.textContent = error.message; err.style.display = 'block'; return; }
     suc.style.display = 'block';
