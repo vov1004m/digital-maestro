@@ -170,6 +170,16 @@
       .sticky:not(.off) { display: flex; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    /* 완주 선물 */
+    .gift-label { display: inline-block; font-size: 14px; font-weight: 700; color: var(--paper); background: var(--ochre-deep); padding: 0.4rem 0.9rem; margin-bottom: 1.4rem; }
+    #lessons h2 { margin-bottom: 1.4rem; }
+    .gift-sub { color: var(--ink-soft); max-width: 34em; line-height: 1.8; }
+
+    /* 마무리 */
+    .closing { padding: 5rem 0 5.5rem; border-top: 1px solid var(--line); }
+    .closing h2 { font-size: clamp(27px, 5.6vw, 40px); margin-bottom: 1rem; }
+    .closing-sub { color: var(--ink-soft); margin-bottom: 2rem; }
   </style>
 </head>
 <body>
@@ -189,8 +199,8 @@
 <main>
   <header class="hero">
     <div class="wrap">
-      <h1><span>자녀의 <em>이름</em>을 넣어</span><span>동요를 만드세요</span></h1>
-      <p class="hero-sub">지휘자가 알려드립니다. 모차르트, 베토벤, 쇼팽, 바흐의 언어를 빌려 <b>세상에 한 곡뿐인 클래식 동요</b>를요. 악보를 몰라도 됩니다.</p>
+      <h1><span>내 아이를 위한 곡을</span><span>엄마 아빠가 <em>직접</em></span></h1>
+      <p class="hero-sub">아이의 <b>이름이 후렴마다 나오는</b>, 세상에 한 곡뿐인 노래입니다. 악보를 볼 줄 몰라도 됩니다. 모차르트, 베토벤, 쇼팽, 바흐 — 네 작곡가의 언어를 빌리는 법을 지휘자가 알려드립니다.</p>
 
       <div class="early js-early">
         <div class="dday js-dday">D-20</div>
@@ -206,7 +216,7 @@
         <button class="play" id="play" type="button" aria-label="곡 듣기"><svg viewBox="0 0 14 14" id="play-svg"><path d="M3 1.5v11l9-5.5z"/></svg></button>
         <div class="listen-body">
           <div class="listen-head">
-            <h2>지휘자가 AI로 조카에게 만들어준 곡</h2>
+            <h2>여러분이 만들 곡도 이런 곡입니다</h2>
             <span class="listen-time" id="play-time"></span>
           </div>
           <p class="listen-desc">네 살 조카 윤슬이의 이름을 넣어, 모차르트의 언어를 빌려 만들었습니다.<br>이 강의에서 알려드리는 방법 그대로 만든 곡입니다.</p>
@@ -238,36 +248,20 @@
     </div>
   </section>
 
+  <section class="block" id="later">
+    <div class="wrap">
+      <h2>한 번 만들면<br>오래 남습니다</h2>
+      <p class="lede">백일에도, 돌잔치에서도, 잠들기 전에도 틉니다.
+         아이가 자라서 자기 이름이 나오는 노래가 있다는 걸 알게 될 때까지요.</p>
+    </div>
+  </section>
+
   <section class="block" id="lessons">
     <div class="wrap">
-      <h2>강의에서 하는 것</h2>
-      <p class="lede">두 편을 보고 나면 자녀의 동요가 한 곡 완성되어 있습니다.</p>
-      <ol class="lessons">
-        <li class="lesson">
-          <span class="lesson-no" aria-hidden="true">1</span>
-          <div>
-            <h3>작곡가를 고르고, 가사를 씁니다<small>10분</small></h3>
-            <p>어떤 작곡가의 언어를 빌릴지 정하는 두 가지 기준. 이름이 또렷하게 들리는 가사, 그리고 부모가 듣는 한 줄을 넣는 법.</p>
-          </div>
-        </li>
-        <li class="lesson">
-          <span class="lesson-no" aria-hidden="true">2</span>
-          <div>
-            <h3>곡을 만들고, 고릅니다<small>10분</small></h3>
-            <p>수노 v6로 같은 가사를 열 곡 뽑는 법. 좋은 곡을 고르는 네 가지 기준. 마음에 안 드는 부분만 골라 고치는 법.</p>
-          </div>
-        </li>
-      </ol>
-      <div class="extras">
-        <div class="extra">
-          <h3>강의 자료</h3>
-          <p>네 작곡가의 프롬프트를 복사해서 그대로 붙이시면 됩니다. 가사를 부탁하는 문장과 고르는 기준도 들어 있습니다. 도구가 업데이트되면 자료도 갱신됩니다.</p>
-        </div>
-        <div class="extra">
-          <h3>지휘자 피드백 1회</h3>
-          <p>뽑은 곡 중 세 곡을 보내주시면 제가 직접 듣고 하나를 골라드립니다. 왜 그 곡인지도 함께 말씀드립니다.</p>
-        </div>
-      </div>
+      <p class="gift-label">완주 선물</p>
+      <h2>강의를 모두 듣고<br>나만의 곡을 완성하셨다면,<br>곡을 보내주세요</h2>
+      <p class="gift-sub">15년간 무대에서 음악을 만들어온 지휘자가 여러분의 곡을 직접 듣고,
+         음악적으로 느껴지는 점과 개선할 수 있는 부분을 이야기해드립니다.</p>
     </div>
   </section>
 
@@ -280,7 +274,7 @@
           <p class="conductor-name">민병현</p>
           <p class="conductor-role">지휘자, 음악감독</p>
           <p>15년 동안 무대에서 음악을 다뤄왔습니다. 조카들에게 곡을 만들어주면서 제가 한 일은 지휘가 아니었습니다. 어떤 소리가 이 아이에게 맞는지 정하고, 나온 곡 중에 어떤 게 좋은지 고른 것. 그게 전부였습니다.</p>
-          <p class="quiet">그 판단을 이 강의에 담았습니다.</p>
+          <p class="quiet">그 판단을 이 강의에 담았습니다. 엄마 아빠가 하실 일은 아이를 떠올리는 것뿐입니다.</p>
           <ul class="facts">
             <li>한국예술종합학교 지휘 전공</li>
             <li>The Dream Orchestra 예술감독 (2013–)</li>
@@ -310,12 +304,11 @@
       <ul class="includes">
         <li>강의 영상 2편</li>
         <li>강의 자료</li>
-        <li>지휘자 피드백 1회</li>
         <li>12개월 동안 다시 보기</li>
       </ul>
       <div class="price-cta">
         <a href="/checkout" class="btn">얼리버드로 신청하기</a>
-        <p>부가세 포함 · 결제 확인 후 대시보드에서 열립니다</p>
+        <p>부가세 포함 · 결제 확인 후 대시보드에서 열립니다<br>곡을 완성해 보내주시면 <strong style="color:#E3C27A">완주 선물</strong>로 직접 들어드립니다</p>
       </div>
     </div>
   </section>
@@ -326,12 +319,19 @@
       <div class="faq">
         <details><summary>음악을 전혀 몰라도 되나요?</summary><p>네. 악보를 읽거나 악기를 다룰 필요가 없습니다. 곡은 AI 작곡 도구가 만들고, 필요한 문장은 모두 복사해서 붙이시면 됩니다. 여러분이 하실 일은 가사를 쓰고, 나온 곡 중에 고르는 것입니다.</p></details>
         <details><summary>어떤 도구를 쓰나요? 따로 돈이 드나요?</summary><p>AI 작곡 도구 수노(Suno)를 씁니다. 무료로도 하루에 여러 곡을 만들 수 있지만, 곡을 고르고 고치는 과정까지 제대로 하시려면 유료 플랜을 권합니다. 수노 요금은 강의료와 별도입니다.</p></details>
-        <details><summary>얼리버드가 끝나면 무엇이 달라지나요?</summary><p>가격만 달라집니다. 강의, 자료, 피드백 구성은 똑같습니다. 얼리버드 기간에 신청하시면 99,000원 구성을 49,000원에 받으시는 겁니다.</p></details>
+        <details><summary>얼리버드가 끝나면 무엇이 달라지나요?</summary><p>가격만 달라집니다. 강의와 자료 구성은 똑같습니다. 얼리버드 기간에 신청하시면 99,000원 구성을 49,000원에 받으시는 겁니다.</p></details>
         <details><summary>자녀가 아직 아기인데 괜찮을까요?</summary><p>괜찮습니다. 아직 따라 부를 나이가 아니라면 틀어놓고 들려주는 곡으로 만드시면 됩니다. 백일, 돌, 천 일 같은 날짜를 가사에 넣는 법도 알려드립니다.</p></details>
-        <details><summary>피드백은 어떻게 받나요?</summary><p>강의 자료에 적힌 주소로 뽑은 곡 세 곡을 보내주시면 됩니다. 제가 직접 듣고, 어떤 곡이 좋은지와 그 이유를 답장으로 드립니다.</p></details>
+        <details><summary>완주 선물은 어떻게 받나요?</summary><p>강의를 모두 듣고 곡을 완성하신 뒤, 강의 자료에 적힌 주소로 보내주시면 됩니다. 제가 직접 듣고 음악적으로 느껴지는 점과 개선할 수 있는 부분을 답장으로 드립니다.</p></details>
         <details><summary>결제하면 언제부터 볼 수 있나요?</summary><p>결제 확인 후 로그인한 계정의 대시보드에 강의가 열립니다. 보통 당일 안에 처리됩니다.</p></details>
         <details><summary>환불할 수 있나요?</summary><p>환불 기준은 <a href="/refund">환불 정책</a>에 안내되어 있습니다.</p></details>
       </div>
+    </div>
+  </section>
+  <section class="closing">
+    <div class="wrap">
+      <h2>아이의 이름을 아는 사람은<br>엄마 아빠뿐입니다</h2>
+      <p class="closing-sub">그래서 이 곡은 세상에 한 곡뿐입니다.</p>
+      <a href="/checkout" class="btn">강의 신청하기</a>
     </div>
   </section>
 </main>
