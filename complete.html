@@ -66,6 +66,23 @@
     }
     .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
   </style>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1419807423444589');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1419807423444589&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -105,6 +122,12 @@
   document.getElementById('pay-date').textContent =
     `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
   document.getElementById('order-num').textContent = q.get('paymentId') || '-';
+
+  // 결제 성공일 때만 메타에 구매 전달
+  if (!q.get('code') && window.fbq) {
+    const _amt = Number(q.get('amount')) || (new Date() <= new Date('2026-10-12T23:59:59+09:00') ? 49000 : 99000);
+    fbq('track', 'Purchase', { value: _amt, currency: 'KRW' });
+  }
 
   // 모바일 결제는 실패해도 이 페이지로 돌아옴 (code 파라미터가 붙어 옴)
   if (q.get('code')) {
