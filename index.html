@@ -65,19 +65,23 @@
     .btn:hover { background: var(--ochre-deep); }
 
     /* 곡 */
-    .listen { margin-top: 2.2rem; display: flex; align-items: center; gap: 1.2rem; padding: 1.5rem 1.5rem 1.4rem; border: 1px solid var(--line); background: var(--paper-2); }
+    .listen { margin-top: 2.4rem; display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.5rem 1.5rem 1.4rem; border: 1px solid var(--line); background: var(--paper-2); }
     .listen-body { flex: 1; min-width: 0; }
     .listen-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
     .listen-body h2 { font-family: var(--sans); font-size: 18px; font-weight: 700; line-height: 1.45; margin: 0; letter-spacing: 0; }
     .listen-desc { margin-top: 0.35rem; font-size: 15px; color: var(--ink-soft); line-height: 1.65; }
     .listen-lyric { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--line); font-family: var(--serif); font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink); }
     .listen-lyric small { display: block; font-family: var(--sans); font-size: 12px; color: var(--ink-soft); margin-bottom: 0.15rem; }
-    .play { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--ochre); display: grid; place-items: center; cursor: pointer; flex: none; }
+    .play { margin-top: 2px; width: 68px; height: 68px; border-radius: 50%; border: none; background: var(--ochre); display: grid; place-items: center; cursor: pointer; flex: none; box-shadow: 0 0 0 0 rgba(197,154,74,0.55); animation: pulse 2.4s ease-out infinite; }
+    .play.on { animation: none; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(197,154,74,0.5); } 70% { box-shadow: 0 0 0 16px rgba(197,154,74,0); } 100% { box-shadow: 0 0 0 0 rgba(197,154,74,0); } }
+    @media (prefers-reduced-motion: reduce) { .play { animation: none; } }
     .play:hover { background: var(--ochre-deep); }
-    .play svg { width: 16px; height: 16px; fill: var(--paper); }
+    .play svg { width: 22px; height: 22px; fill: var(--paper); }
     .listen-text { font-size: 15px; line-height: 1.55; }
     .listen-text b { display: block; font-size: 16px; }
     .listen-text span { color: var(--ink-soft); }
+    .listen-cue { display: inline-block; margin-top: 0.7rem; font-size: 13px; font-weight: 700; color: var(--ochre-deep); }
     .listen-time { color: var(--ink-soft); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
     /* 섹션 */
@@ -219,6 +223,19 @@
       <h1><span>내 아이를 위한 곡을</span><span>엄마 아빠가 <em>직접</em></span></h1>
       <p class="hero-sub">아이의 <b>이름이 후렴마다 나오는</b>, 세상에 한 곡뿐인 노래입니다. 악보를 볼 줄 몰라도 됩니다. 모차르트, 베토벤, 쇼팽, 바흐 — 네 작곡가의 언어를 빌리는 법을 지휘자가 알려드립니다.</p>
 
+      <div class="listen" id="listen">
+        <button class="play" id="play" type="button" aria-label="곡 듣기"><svg viewBox="0 0 14 14" id="play-svg"><path d="M3 1.5v11l9-5.5z"/></svg></button>
+        <div class="listen-body">
+          <div class="listen-head">
+            <h2>여러분이 만들 곡도 이런 곡입니다</h2>
+            <span class="listen-time" id="play-time"></span>
+          </div>
+          <p class="listen-cue">▶ 눌러서 들어보세요</p>
+          <p class="listen-desc">네 살 조카 윤슬이의 이름을 넣어, 모차르트의 언어를 빌려 만들었습니다.<br>이 강의에서 알려드리는 방법 그대로 만든 곡입니다.</p>
+        </div>
+      </div>
+      <audio id="song" preload="metadata" src="/song-yunseul.mp3"></audio>
+
       <div class="early js-early">
         <div class="dday js-dday">D-20</div>
         <div class="early-text">
@@ -228,18 +245,6 @@
         </div>
         <a href="/checkout" class="btn">지금 신청하기</a>
       </div>
-
-      <div class="listen" id="listen">
-        <button class="play" id="play" type="button" aria-label="곡 듣기"><svg viewBox="0 0 14 14" id="play-svg"><path d="M3 1.5v11l9-5.5z"/></svg></button>
-        <div class="listen-body">
-          <div class="listen-head">
-            <h2>여러분이 만들 곡도 이런 곡입니다</h2>
-            <span class="listen-time" id="play-time"></span>
-          </div>
-          <p class="listen-desc">네 살 조카 윤슬이의 이름을 넣어, 모차르트의 언어를 빌려 만들었습니다.<br>이 강의에서 알려드리는 방법 그대로 만든 곡입니다.</p>
-        </div>
-      </div>
-      <audio id="song" preload="metadata" src="/song-yunseul.mp3"></audio>
     </div>
   </header>
 
@@ -434,7 +439,7 @@
   song.addEventListener('play', () => state(true));
   song.addEventListener('pause', () => state(false));
   song.addEventListener('ended', () => state(false));
-  document.getElementById('play').addEventListener('click', () => song.paused ? song.play() : song.pause());
+  document.getElementById('play').addEventListener('click', () => { document.getElementById('play').classList.add('on'); song.paused ? song.play() : song.pause(); });
 
   // 가격 영역이 보이면 하단 막대 숨김 (같은 내용이 두 번 보이지 않게)
   const sticky = document.querySelector('.js-sticky');
@@ -447,6 +452,39 @@
     document.getElementById('nav-login').hidden = true;
     document.getElementById('nav-mine').hidden = false;
   });
+</script>
+
+<script>
+  // 어디까지 읽고 나갔는지 측정 (메타 픽셀)
+  (function () {
+    if (!window.fbq) return;
+    var half = false;
+    function onScroll() {
+      if (half) return;
+      var d = document.documentElement;
+      if ((d.scrollTop + window.innerHeight) / d.scrollHeight >= 0.5) {
+        half = true;
+        fbq('trackCustom', 'ScrollHalf');
+        window.removeEventListener('scroll', onScroll);
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    var price = document.getElementById('price');
+    if (price && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { fbq('trackCustom', 'ViewPrice'); io.disconnect(); }
+      }, { threshold: 0.4 });
+      io.observe(price);
+    }
+
+    document.querySelectorAll('a[href="/checkout"]').forEach(function (a) {
+      a.addEventListener('click', function () { fbq('trackCustom', 'ClickApply'); });
+    });
+
+    var play = document.getElementById('play');
+    if (play) play.addEventListener('click', function () { fbq('trackCustom', 'PlaySong'); }, { once: true });
+  })();
 </script>
 </body>
 </html>
