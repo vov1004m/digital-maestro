@@ -458,30 +458,46 @@
   // 어디까지 읽고 나갔는지 측정 (메타 픽셀)
   (function () {
     if (!window.fbq) return;
-    var half = false;
+
+    // 1) 스크롤 깊이 — 화면 높이 기준으로 얕게 끊는다
+    var vh = window.innerHeight || 700;
+    var marks = [
+      { name: 'Scroll1',  at: vh * 0.8 },   // 한 화면쯤 내림
+      { name: 'Scroll2',  at: vh * 2.0 },   // 두 화면쯤
+      { name: 'Scroll4',  at: vh * 4.0 }    // 네 화면쯤
+    ];
     function onScroll() {
-      if (half) return;
-      var d = document.documentElement;
-      if ((d.scrollTop + window.innerHeight) / d.scrollHeight >= 0.5) {
-        half = true;
-        fbq('trackCustom', 'ScrollHalf');
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      for (var i = 0; i < marks.length; i++) {
+        if (!marks[i].done && y >= marks[i].at) {
+          marks[i].done = true;
+          fbq('trackCustom', marks[i].name);
+        }
+      }
+      if (marks.every(function (m) { return m.done; })) {
         window.removeEventListener('scroll', onScroll);
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true });
 
+    // 2) 머문 시간 — 15초 넘게 있었는가
+    setTimeout(function () { fbq('trackCustom', 'Stay15s'); }, 15000);
+
+    // 3) 가격표를 눈으로 봤는가 (조금만 걸쳐도 잡히게)
     var price = document.getElementById('price');
     if (price && 'IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (es) {
         if (es[0].isIntersecting) { fbq('trackCustom', 'ViewPrice'); io.disconnect(); }
-      }, { threshold: 0.4 });
+      }, { threshold: 0 });
       io.observe(price);
     }
 
+    // 4) 신청 버튼을 눌렀는가
     document.querySelectorAll('a[href="/checkout"]').forEach(function (a) {
       a.addEventListener('click', function () { fbq('trackCustom', 'ClickApply'); });
     });
 
+    // 5) 곡을 틀었는가
     var play = document.getElementById('play');
     if (play) play.addEventListener('click', function () { fbq('trackCustom', 'PlaySong'); }, { once: true });
   })();
