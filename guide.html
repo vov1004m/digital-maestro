@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="무료 프롬프트로 우리 아이 이름 노래 가사를 먼저 만들어 보세요. 디지털 마에스트로 · 지휘자 민병현">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>우리 아이 이름 노래 · 디지털 마에스트로</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap">
+<style>
+/* Layout: one left-aligned phone column. Hero → email → free Mozart lyric prompt → 4 styles → free vs paid → buy. CTA appears three times. */
+:root {
+  --bg: #080808;
+  --surface: #121110;
+  --line: #2a2620;
+  --fg: #F5F0E8;
+  --muted: #8A857C;
+  --gold: #C9A84C;
+  --gold-dim: #8F7A45;
+  --note: #6f8fa8;
+  --err: #e08a7a;
+  --serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 16px; line-height: 1.75; word-break: keep-all; }
+.wrap { max-width: 640px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+header.top { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; border-bottom: 1px solid var(--line); }
+.logo { font-family: var(--serif); font-weight: 700; color: var(--fg); text-decoration: none; }
+.logo span { color: var(--gold); }
+.top a.small { color: var(--muted); font-size: 13px; text-decoration: none; }
+
+.eyebrow { color: var(--gold); font-size: 13px; letter-spacing: 0.08em; font-weight: 500; }
+h1, h2, h3 { font-family: var(--serif); text-wrap: balance; margin: 0; font-weight: 700; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+
+/* hero */
+.hero { padding-block: 44px 36px; display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(32px, 8.6vw, 48px); line-height: 1.25; }
+.hero h1 em { font-style: normal; color: var(--gold); }
+.lede { font-size: 18px; }
+.lede b { color: var(--gold); font-weight: 500; }
+.wave { width: 100%; max-width: 360px; height: 18px; display: block; }
+.wave path { stroke: var(--gold-dim); stroke-width: 2; fill: none; }
+.playing .wave path { stroke: var(--gold); animation: shimmer 1.6s ease-in-out infinite; }
+@keyframes shimmer { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .playing .wave path { animation: none; } }
+
+.player { display: flex; gap: 16px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 16px; background: var(--surface); }
+.play { flex: none; width: 56px; height: 56px; border-radius: 50%; border: 0; background: var(--gold); color: var(--bg); font-size: 20px; cursor: pointer; display: grid; place-items: center; }
+.play:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+.player .meta { min-width: 0; }
+.player .title { font-family: var(--serif); font-size: 17px; }
+.player .sub { font-size: 13px; color: var(--muted); }
+
+.memo { border: 1px dashed var(--note); color: var(--note); border-radius: 6px; font-size: 12.5px; line-height: 1.6; padding: 8px 12px; }
+.memo::before { content: "검토 메모 · "; font-weight: 700; }
+
+.btn { background: var(--gold); color: var(--bg); border: 0; border-radius: 8px; padding: 15px 18px; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer; text-align: center; text-decoration: none; display: block; }
+.btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+.btn.ghost { background: transparent; color: var(--gold); border: 1px solid var(--gold-dim); }
+
+/* gate */
+.gate { border: 1px solid var(--gold-dim); border-radius: 12px; padding: 24px 20px; display: grid; gap: 14px; background: var(--surface); scroll-margin-top: 16px; }
+.gate h2 { font-size: 23px; line-height: 1.4; }
+.gate form { display: grid; gap: 12px; }
+.gate input[type=email], .field input { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; font: inherit; font-size: 17px; width: 100%; }
+.gate input:focus, .field input:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: transparent; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.6; }
+.check input { margin-top: 5px; accent-color: var(--gold); flex: none; }
+.check small { display: block; color: var(--muted); font-size: 12.5px; }
+.err { color: var(--err); font-size: 13.5px; min-height: 1.2em; }
+.ok { color: var(--gold); font-size: 15px; }
+
+/* free trial */
+section.block { padding-block: 40px; display: grid; gap: 18px; }
+section.block + section.block { border-top: 1px solid var(--line); }
+.block h2 { font-size: 26px; line-height: 1.35; }
+.fields { display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-size: 13px; color: var(--muted); }
+.copyrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.copy { background: transparent; color: var(--gold); border: 1px solid var(--gold-dim); border-radius: 999px; padding: 5px 14px; font: inherit; font-size: 13px; cursor: pointer; }
+.copy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.prompt { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; font-family: var(--sans); font-size: 14.5px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+.prompt mark { background: none; color: var(--gold); font-weight: 700; }
+.lyric { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; font-family: var(--serif); font-size: 16px; line-height: 1.9; white-space: pre-wrap; margin: 0; }
+.lyric .tag { color: var(--gold-dim); font-family: var(--mono); font-size: 12.5px; }
+
+.locked { position: relative; }
+.locked.is-locked .inner { filter: blur(6px); opacity: .45; pointer-events: none; user-select: none; max-height: 520px; overflow: hidden; }
+.locked.is-locked::after { content: "이메일을 넣으면 바로 열려요"; position: absolute; left: 50%; top: 140px; transform: translateX(-50%); background: var(--bg); border: 1px solid var(--gold-dim); color: var(--gold); padding: 8px 16px; border-radius: 999px; font-size: 14px; white-space: nowrap; }
+
+details.more { display: grid; gap: 10px; }
+details.more summary { cursor: pointer; color: var(--gold); font-size: 14.5px; list-style: none; }
+details.more summary::-webkit-details-marker { display: none; }
+details.more summary::after { content: " ↓"; }
+details.more[open] summary::after { content: " ↑"; }
+details.more[open] summary { margin-bottom: 10px; }
+.bridge { border-left: 2px solid var(--gold); padding-left: 16px; display: grid; gap: 14px; }
+.bridge p { font-family: var(--serif); font-size: 19px; line-height: 1.7; }
+
+/* styles */
+.styles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.style { border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.style h3 { font-size: 19px; }
+.style p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
+.style .badge { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.style.free { border-color: var(--gold-dim); background: var(--surface); }
+.style.free .badge { color: var(--gold); }
+
+/* compare */
+.tablewrap { overflow-x: auto; }
+table.cmp { width: 100%; border-collapse: collapse; font-size: 15px; }
+table.cmp th, table.cmp td { text-align: left; padding: 12px 10px 12px 0; border-top: 1px solid var(--line); vertical-align: top; }
+table.cmp thead th { border-top: 0; font-size: 13px; font-weight: 500; color: var(--muted); }
+table.cmp thead th:last-child { color: var(--gold); }
+table.cmp td:first-child { color: var(--muted); width: 42%; }
+
+.pitch p { font-size: 17px; }
+.pitch p.lead { font-family: var(--serif); font-size: 21px; line-height: 1.6; }
+.price { font-family: var(--serif); font-size: 30px; }
+.price small { font-family: var(--sans); font-size: 14px; color: var(--muted); margin-left: 6px; }
+
+footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var(--muted); font-size: 12.5px; line-height: 1.8; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 14px; }
+@media (max-width: 420px) { .fields { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="https://digital-maestro.co.kr">디지털 <span>마에스트로</span></a>
+    <a class="small" href="https://digital-maestro.co.kr">클래스 보기</a>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero" id="hero">
+    <div class="eyebrow">무료 체험 · 지휘자 민병현</div>
+    <h1>아이 이름 한 줄로,<br><em>세상에 하나뿐인</em> 노래</h1>
+    <svg class="wave" viewBox="0 0 360 18" aria-hidden="true"><path d="M0 9 Q 15 1 30 9 T 60 9 T 90 9 T 120 9 T 150 9 T 180 9 T 210 9 T 240 9 T 270 9 T 300 9 T 330 9 T 360 9"/></svg>
+    <p class="lede">무료 프롬프트로 우리 아이 가사를 먼저 만들어 보세요.<br><b>20분 클래스</b>에서는 Suno로 실제 노래까지 완성합니다.</p>
+    <div class="player">
+      <button class="play" id="playBtn" aria-label="샘플 곡 후렴 듣기">▶</button>
+      <div class="meta">
+        <div class="title">지휘자가 조카 윤슬이에게 만든 노래</div>
+        <div class="sub">모차르트 스타일 · 후렴 미리듣기</div>
+      </div>
+    </div>
+    <a class="btn" href="#gate" id="cta1">무료 프롬프트 받기</a>
+  </div>
+
+  <!-- GATE -->
+  <div class="gate" id="gate">
+    <div class="eyebrow">회원가입 없이, 이메일만</div>
+    <h2>이메일을 넣으면 무료 프롬프트가 바로 열려요</h2>
+    <form id="gateForm" novalidate>
+      <input id="email" type="email" placeholder="이메일 주소" autocomplete="email" aria-label="이메일 주소">
+      <label class="check"><input id="agreePrivacy" type="checkbox"><span>(필수) 개인정보 수집·이용에 동의합니다<small>수집 항목: 이메일 · 목적: 무료 프롬프트 발송 · 보관: 동의 철회 시까지</small></span></label>
+      <label class="check"><input id="agreeAd" type="checkbox"><span>(선택) 새 클래스와 할인 소식을 이메일로 받을게요</span></label>
+      <p class="err" id="err" role="alert"></p>
+      <p class="muted" style="font-size:14px">이메일 입력 후 프롬프트가 바로 열립니다. 회원가입은 필요 없어요.</p>
+      <button class="btn" type="submit">무료 프롬프트 열기</button>
+    </form>
+    <p class="ok" id="ok" hidden></p>
+  </div>
+
+  <!-- FREE TRIAL (locked until email) -->
+  <div class="locked is-locked" id="locked">
+    <div class="inner">
+      <section class="block" id="trial">
+        <div class="eyebrow">무료 체험 · 모차르트 스타일</div>
+        <h2>밝고 사랑스러운 축하곡 가사 만들기</h2>
+        <p>아이 이름을 넣고 아래 프롬프트를 복사해서 ChatGPT나 Claude에 붙여 넣으세요. 1분이면 가사가 나와요.</p>
+        <div class="fields">
+          <div class="field"><label for="childName">아이 이름</label><input id="childName" type="text" maxlength="6" placeholder="예: 하윤" autocomplete="off"></div>
+          <div class="field"><label for="meaning">이름 뜻 (선택)</label><input id="meaning" type="text" maxlength="30" placeholder="예: 물 위에 반짝이는 빛" autocomplete="off"></div>
+        </div>
+        <div class="copyrow"><strong>작사 프롬프트</strong><button class="copy" data-copy="prompt">복사</button></div>
+        <pre class="prompt" id="prompt"></pre>
+        <p class="muted">같은 이름이라도 한자에 따라 뜻이 달라요. 우리 아이 이름의 한자 뜻을 넣으면 가사가 그 아이만의 것이 돼요.</p>
+
+        <strong>완성 예시 · 윤슬 (물 위에 반짝이는 빛)</strong>
+        <pre class="lyric"><span class="tag">[Verse]</span>
+아침 햇살 창문에 톡톡
+눈을 뜨면 반짝반짝
+노래하면 꽃이 피고
+춤을 추면 반짝반짝
+
+<span class="tag">[Chorus]</span>
+윤슬아 윤슬아
+물결 위에 빛나는 이름
+윤슬아 윤슬아
+하나뿐인 우리 윤슬</pre>
+        <details class="more">
+          <summary>전체 가사 보기</summary>
+          <pre class="lyric"><span class="tag">[Bridge]</span>
+어디에 있어도
+너는 빛나는 아이
+아무도 모르는 날에도
+나는 알고 있단다
+
+<span class="tag">[Final Chorus]</span>
+윤슬아! 윤슬아!
+손을 들고 하나 둘 셋
+윤슬아! 윤슬아!
+반짝 반짝 우리 윤슬</pre>
+        </details>
+
+        <div class="bridge">
+          <p>방금 가사는 시작입니다. 우리 아이와 가족 분위기에 맞는 스타일을 고르고, 가사를 다듬어 Suno에서 실제 노래로 완성하는 과정은 클래스에서 알려드려요.</p>
+          <a class="btn" href="#buy" id="cta2">4가지 스타일로 내 노래 완성하기</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 4 STYLES -->
+  <section class="block">
+    <div class="eyebrow">작곡가에게서 빌려 온 네 가지 가사 스타일</div>
+    <h2>무료로는 한 가지, 클래스에서는 네 가지</h2>
+    <p class="muted">작곡을 배우는 클래스가 아니에요. 작곡가마다 다른 분위기를 가사와 노래 스타일에 담는 방법을 배워요.</p>
+    <div class="styles">
+      <div class="style free"><h3>모차르트</h3><p>밝고 사랑스러운 축하곡</p><span class="badge">무료 체험</span></div>
+      <div class="style"><h3>바흐</h3><p>따뜻하고 정갈한 가족의 메시지</p><span class="badge">🔒 클래스에서 제공</span></div>
+      <div class="style"><h3>쇼팽</h3><p>감성적이고 영화 같은 편지</p><span class="badge">🔒 클래스에서 제공</span></div>
+      <div class="style"><h3>베토벤</h3><p>웅장하고 기억에 남는 선언</p><span class="badge">🔒 클래스에서 제공</span></div>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section class="block">
+    <h2>무료 체험과 클래스는 이렇게 달라요</h2>
+    <div class="tablewrap">
+      <table class="cmp">
+        <thead><tr><th scope="col">무료 체험</th><th scope="col">99,000원 클래스</th></tr></thead>
+        <tbody>
+          <tr><td>작사 프롬프트 1개</td><td>모차르트·바흐·쇼팽·베토벤 4종 프롬프트</td></tr>
+          <tr><td>가사 예시 확인</td><td>우리 아이 상황에 맞게 가사 다듬는 법</td></tr>
+          <tr><td>노래를 상상해 보기</td><td>Suno로 실제 노래 완성</td></tr>
+          <tr><td>첫 경험</td><td>20분 전체 제작 과정 영상</td></tr>
+          <tr><td>혼자 고르기</td><td>완성한 노래 1곡 지휘자 피드백 1회</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PITCH + BUY -->
+  <section class="block pitch" id="buy">
+    <p class="lead">프롬프트 하나로 가사를 얻는 데서 끝내지 마세요.<br>우리 아이 이름과 가족의 이야기를 담아, 실제로 들려줄 수 있는 노래까지 완성하세요.</p>
+    <p>작곡 지식 없이도 가능합니다. 20분 강의로 가사부터 Suno 노래 완성까지 함께합니다.</p>
+    <div class="price">99,000원<small>20분 완성 클래스</small></div>
+    <p class="muted">4가지 작사 프롬프트 · Suno 완성 가이드 · 내 곡 1회 피드백 포함</p>
+    <a class="btn" href="https://digital-maestro.co.kr" id="cta3">99,000원 클래스 수강하기</a>
+  </section>
+
+  <footer>
+    디지털 마에스트로 · 헤르츠뮤직<br>
+    사업자 정보와 이용약관은 디지털 마에스트로 사이트 하단과 같게 넣어요.
+  </footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function voc(n) {
+    var c = n.charCodeAt(n.length - 1);
+    if (c < 0xAC00 || c > 0xD7A3) return n + "야";
+    return n + (((c - 0xAC00) % 28) ? "아" : "야");
+  }
+  function esc(s) { return s.replace(/[&<>]/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[m]; }); }
+
+  function render() {
+    var raw = $("childName").value.trim();
+    var name = raw ? esc(raw) : "○○";
+    var call = raw ? esc(voc(raw)) : "○○야";
+    var mean = $("meaning").value.trim();
+    var meanTxt = mean ? esc(mean) : "따로 없음. 이름의 소리에서 떠오르는 이미지로 써 줘";
+    $("prompt").innerHTML =
+      "너는 모차르트의 동요처럼 밝고 사랑스러운 노랫말을 쓰는 작사가야. 아래 정보로 아이 이름 노래 가사를 써 줘.\n\n" +
+      "- 아이 이름: <mark>" + name + "</mark>\n" +
+      "- 이름 뜻: <mark>" + meanTxt + "</mark>\n" +
+      "- 분위기: 밝고 사랑스럽고 통통 튀는 축하곡\n\n" +
+      "조건\n" +
+      "1. [Verse] [Chorus] [Bridge] [Final Chorus] 순서로, 각 4줄\n" +
+      "2. 후렴 첫 줄은 \"<mark>" + call + " " + call + "</mark>\"로 시작하고, 후렴에 이름이 네 번 들어가게\n" +
+      "3. 줄 끝은 되도록 명사로 끝내기\n" +
+      "4. 세 살 아이도 따라 부를 수 있는 쉬운 말로, 한 줄에 10자 안팎\n" +
+      "5. 브릿지는 부모가 아이에게 건네는 다짐\n" +
+      "6. 전체 50단어 안쪽. '~하네', '~오네' 같은 옛날 말투는 쓰지 않기";
+  }
+  $("childName").addEventListener("input", render);
+  $("meaning").addEventListener("input", render);
+  render();
+
+  var playing = false;
+  $("playBtn").addEventListener("click", function () {
+    playing = !playing;
+    $("hero").classList.toggle("playing", playing);
+    this.textContent = playing ? "❚❚" : "▶";
+    this.setAttribute("aria-label", playing ? "멈추기" : "샘플 곡 후렴 듣기");
+  });
+
+  var tt;
+  function toast(msg) { var t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(function () { t.hidden = true; }, 1800); }
+
+  document.querySelectorAll(".copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var el = $(b.getAttribute("data-copy"));
+      var fallback = function () { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); toast("선택됐어요. 길게 눌러 복사하세요"); };
+      try { navigator.clipboard.writeText(el.innerText).then(function () { toast("복사했어요"); }, fallback); } catch (e) { fallback(); }
+    });
+  });
+
+  var unlocked = false;
+  function unlock(email) {
+    unlocked = true;
+    $("locked").classList.remove("is-locked");
+    $("gateForm").hidden = true;
+    $("ok").hidden = false;
+    $("ok").textContent = "열렸어요. 아래에서 아이 이름을 넣고 프롬프트를 복사하세요.";
+  }
+  try { var saved = localStorage.getItem("dm_guide_email"); if (saved) unlock(saved); } catch (e) {}
+
+  $("cta1").addEventListener("click", function (e) {
+    if (unlocked) { e.preventDefault(); $("trial").scrollIntoView({ behavior: "smooth" }); }
+  });
+
+  $("gateForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = $("email").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $("err").textContent = "이메일 주소를 다시 확인해 주세요."; $("email").focus(); return; }
+    if (!$("agreePrivacy").checked) { $("err").textContent = "프롬프트를 보내려면 개인정보 수집·이용 동의가 필요해요."; return; }
+    $("err").textContent = "";
+    try { localStorage.setItem("dm_guide_email", email); } catch (e2) {}
+    unlock(email);
+    $("trial").scrollIntoView({ behavior: "smooth" });
+    setTimeout(function () { $("childName").focus({ preventScroll: true }); }, 500);
+  });
+})();
+</script>
+</body>
+</html>
