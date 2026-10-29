@@ -148,6 +148,7 @@ footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var
     <p class="lede">무료 프롬프트로 우리 아이 가사를 먼저 만들어 보세요.<br><b>20분 클래스</b>에서는 Suno로 실제 노래까지 완성합니다.</p>
     <div class="player">
       <button class="play" id="playBtn" aria-label="샘플 곡 후렴 듣기">▶</button>
+      <audio id="sample" src="yunseul-chorus.mp3" preload="none"></audio>
       <div class="meta">
         <div class="title">지휘자가 조카 윤슬이에게 만든 노래</div>
         <div class="sub">모차르트 스타일 · 후렴 미리듣기</div>
@@ -300,13 +301,21 @@ footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var
   $("meaning").addEventListener("input", render);
   render();
 
-  var playing = false;
-  $("playBtn").addEventListener("click", function () {
-    playing = !playing;
-    $("hero").classList.toggle("playing", playing);
-    this.textContent = playing ? "❚❚" : "▶";
-    this.setAttribute("aria-label", playing ? "멈추기" : "샘플 곡 후렴 듣기");
+  var audio = $("sample"), btn = $("playBtn");
+  function setPlaying(on) {
+    $("hero").classList.toggle("playing", on);
+    btn.textContent = on ? "❚❚" : "▶";
+    btn.setAttribute("aria-label", on ? "멈추기" : "샘플 곡 후렴 듣기");
+  }
+  btn.addEventListener("click", function () {
+    if (audio.paused) {
+      var pr = audio.play();
+      if (pr && pr.catch) pr.catch(function () { setPlaying(false); toast("음원을 불러오지 못했어요"); });
+    } else { audio.pause(); }
   });
+  audio.addEventListener("play", function () { setPlaying(true); });
+  audio.addEventListener("pause", function () { setPlaying(false); });
+  audio.addEventListener("ended", function () { audio.currentTime = 0; setPlaying(false); });
 
   var tt;
   function toast(msg) { var t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(function () { t.hidden = true; }, 1800); }
